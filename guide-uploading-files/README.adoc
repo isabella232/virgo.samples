@@ -43,8 +43,8 @@ within your IDE.
 
 == Directions
 
-Virgo has no support for Springs `@EnableAutoConfiguration`. Thus you have to be explicit where Spring-Boot configures the embedded Tomcat with reasonable defaults on your behalf.
-Last but not least Virgo is an OSGi runtime and every bundle needs to be explicit about it's needs in the `META-INF/MANIFEST.MF`.
+Virgo has no support for Springs `@EnableAutoConfiguration`. Thus you have to be explicit where Spring Boot configures the embedded Tomcat with reasonable defaults on your behalf.
+Last but not least Virgo is an OSGi runtime and every bundle needs to be explicit about its needs in the `META-INF/MANIFEST.MF`.
 
 This is mostly about specifying necessary `Import-Package` and the `Web-ContextPath` the file upload application wants to be published.
 
@@ -64,8 +64,8 @@ Import-Package: org.eclipse.virgo.web.dm,
 Web-ContextPath: /upload-guide[]
 ----
 
-You can mix and match the Virgo specific header `Import-Bundle` and OSGi standard header `Import-Package` within the `MANIFETS.MF`. In the sample the fine-tuning of the
-`MANIFEST.MF` is done within the Maven pomx.xml.
+You can mix and match the Virgo specific header `Import-Bundle` and OSGi standard header `Import-Package` within the `MANIFEST.MF`. In the sample the fine-tuning of the
+`MANIFEST.MF` is done within the Maven `pom.xml`.
 
 NOTE: If you intend to run your bundles in different OSGi containers you have to limit yourself to the OSGi standard headers.
 
