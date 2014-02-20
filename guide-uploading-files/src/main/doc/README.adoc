@@ -1,3 +1,8 @@
+Virgo recipe for "Uploading Files"
+==================================
+
+image:http://www.eclipse.org/virgo/images/virgo-logo.png["Virgo Homepage"]
+
 == Acknowledgements
 
 This guide is inspired by https://spring.io/guides/gs/uploading-files/["Getting Started - Uploading Files"] from the https://spring.io/[Spring] https://spring.io/guides[Guides].
@@ -73,7 +78,7 @@ Next step is to configuring the servlet container via `WEB-INF/web.xml`:
 
 [source,xml]
 ----
-include::src/main/resources/WEB-INF/web.xml[]
+include::../resources/WEB-INF/web.xml[]
 ----
 
 NOTE: Most important the `contextClass` which is *not* the default from the Spring Framework, but `org.eclipse.virgo.web.dm.ServerOsgiBundleXmlWebApplicationContext`.
@@ -90,7 +95,7 @@ Finally the Spring web application context. Nothing Virgo specific here:
 
 [source,xml]
 ----
-include::src/main/resources/WEB-INF/spring/appServlet/servlet-context.xml[]
+include::../resources/WEB-INF/spring/appServlet/servlet-context.xml[]
 ----
 
 == Let's taste
@@ -99,7 +104,7 @@ For easy client-side consumption of the file upload you can use the `FileUploade
 
 [source,java]
 ----
-include::src/main/java/org/eclipse/virgo/guides/uploading/internal/FileUploader.java[]
+include::../java/org/eclipse/virgo/guides/uploading/internal/FileUploader.java[]
 ----
 
 NOTE: Please see the original guide https://spring.io/guides/gs/uploading-files/["Getting Started - Uploading Files"] for more background information about this client.
@@ -113,8 +118,7 @@ $ mvn package exec:java
 Or if you are more used to `curl` and the command line simply run the following command within the project's directory.
 
 ----
-curl -F "name=sample.txt-uploaded" -F "file=sample.txt" \
- http://localhost:8080/upload-guide/upload
+$ curl -F "name=sample.txt" -F "file=@sample.txt" http://localhost:8080/upload-guide/upload
 ----
 
 Either way you should see the following output independent of your choice:

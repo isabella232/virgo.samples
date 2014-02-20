@@ -14,6 +14,9 @@
 		<javax.servlet.version>3.0.1</javax.servlet.version>
 
 		<maven.compiler.plugin.version>2.3.2</maven.compiler.plugin.version>
+		<maven.jar.plugin.version>2.3.2</maven.jar.plugin.version>
+		<maven.resources.plugin.version>2.5</maven.resources.plugin.version>
+
 		<maven.bundle.plugin.version>2.3.7</maven.bundle.plugin.version>
 	</properties>
 
@@ -23,7 +26,16 @@
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>${maven.compiler.plugin.version}</version>
 			</plugin>
-
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<version>${maven.jar.plugin.version}</version>
+				<configuration>
+					<archive>
+						<manifestFile>${project.build.outputDirectory}/META-INF/MANIFEST.MF</manifestFile>
+					</archive>
+				</configuration>
+			</plugin>
 			<plugin>
 				<groupId>org.apache.felix</groupId>
 				<artifactId>maven-bundle-plugin</artifactId>
@@ -40,7 +52,8 @@
 				<configuration>
 					<instructions>
 						<Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
-						<Bundle-Vendor>EclipseSource</Bundle-Vendor>
+						<Bundle-Vendor>Eclipse Virgo</Bundle-Vendor>
+						<Bundle-Version>${project.version}</Bundle-Version>
 						<Web-ContextPath>/upload-guide</Web-ContextPath>
 						<Import-Bundle>
 							org.springframework.beans,
@@ -70,7 +83,69 @@
 					</arguments>
 				</configuration>
 			</plugin>
+			<!-- only required for building the documentation -->
+			<plugin>
+				<groupId>org.asciidoctor</groupId>
+				<artifactId>asciidoctor-maven-plugin</artifactId>
+				<!-- <version>${asciidoctor.version}</version> -->
+				<configuration>
+					<sourceDirectory>src/main/doc</sourceDirectory>
+					<outputDirectory>target/docs</outputDirectory>
+					<backend>html</backend>
+					<doctype>book</doctype>
+					<!-- <attributes> <stylesheet>http://www.eclipse.org/virgo/resources/local.css</stylesheet> 
+						</attributes> -->
+				</configuration>
+				<executions>
+					<execution>
+						<id>output-html</id>
+						<phase>generate-resources</phase>
+						<goals>
+							<goal>process-asciidoc</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
 		</plugins>
+
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-resources-plugin</artifactId>
+					<version>${maven.resources.plugin.version}</version>
+					<configuration>
+						<encoding>UTF-8</encoding>
+					</configuration>
+				</plugin>
+				<!--This plugin's configuration is used to store Eclipse m2e settings 
+					only. It has no influence on the Maven build itself. -->
+				<plugin>
+					<groupId>org.eclipse.m2e</groupId>
+					<artifactId>lifecycle-mapping</artifactId>
+					<version>1.0.0</version>
+					<configuration>
+						<lifecycleMappingMetadata>
+							<pluginExecutions>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>org.asciidoctor</groupId>
+										<artifactId>asciidoctor-maven-plugin</artifactId>
+										<versionRange>[0.1.4,)</versionRange>
+										<goals>
+											<goal>process-asciidoc</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<ignore></ignore>
+									</action>
+								</pluginExecution>
+							</pluginExecutions>
+						</lifecycleMappingMetadata>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
 	</build>
 
 	<dependencies>
@@ -79,8 +154,6 @@
 			<artifactId>org.springframework.core</artifactId>
 			<version>${springframework.version}</version>
 		</dependency>
-		<!-- <dependency> <groupId>org.springframework</groupId> <artifactId>org.springframework.context</artifactId> 
-			<version>${springframework.version}</version> </dependency> -->
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>org.springframework.web</artifactId>
@@ -91,15 +164,11 @@
 			<artifactId>org.springframework.web.servlet</artifactId>
 			<version>${springframework.version}</version>
 		</dependency>
-		<!-- <dependency> <groupId>org.springframework</groupId> <artifactId>org.springframework.test</artifactId> 
-			<version>${springframework.version}</version> <scope>test</scope> </dependency> -->
 		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>javax.servlet-api</artifactId>
 			<version>${javax.servlet.version}</version>
 		</dependency>
-		<!-- <dependency> <groupId>org.osgi</groupId> <artifactId>org.osgi.core</artifactId> 
-			<version>${org.osgi.core.version}</version> <scope>provided</scope> </dependency> -->
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
