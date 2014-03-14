@@ -14,9 +14,9 @@ package greenpages.web;
 import greenpages.Directory;
 import greenpages.Listing;
 
+import java.util.Collections;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -33,13 +33,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 public class GreenPagesController {
 
-    /**
-     * This field is injected automatically by Spring. For this injection to be satisfied, the greenpages.web module
-     * must either declare a bean of type {@link Directory} or it must import a <code>Directory</code> from OSGi.
-     */
-	@Autowired
+	// TODO 1.4 @Autowired directory
 	private Directory directory;   
-
 
     @RequestMapping("/home.htm")
     public void home() {
@@ -47,11 +42,13 @@ public class GreenPagesController {
 
     @RequestMapping("/search.htm")
     public List<Listing> search(@RequestParam("query") String query) {
-        return this.directory.search(query);
+    	// TODO 1.5 Implement web endpoint
+    	return Collections.emptyList();
     }
 
     @RequestMapping("/entry.htm")
     public Listing entry(@RequestParam("id") int id) {
-        return this.directory.findListing(id);
+    	// TODO 1.5 Implement web endpoint
+    	throw new UnsupportedOperationException();
     }
 }

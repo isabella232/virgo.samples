@@ -13,6 +13,8 @@
 
 <!-- CONFIGURE A PARENT APPLICATION CONTEXT -->
 
+  <!-- TODO 1.0 Set OSGi aware contextClass and add ContextLoaderListener -->
+  <!--
   <context-param>
     <param-name>contextClass</param-name>
     <param-value>org.eclipse.virgo.web.dm.ServerOsgiBundleXmlWebApplicationContext</param-value>
@@ -21,7 +23,7 @@
   <listener>
     <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
   </listener>
-
+   -->
 
   <!-- DISPATCHER SERVLET CONFIG -->
   <servlet>
