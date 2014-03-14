@@ -14,8 +14,6 @@
 		<module>greenpages.parent</module>
 		<module>greenpages.db</module>
 		<module>greenpages.core</module>
-		<module>greenpages.jpa</module>
 		<module>greenpages.web</module>
-		<module>greenpages.par</module>
 	</modules>
 </project>

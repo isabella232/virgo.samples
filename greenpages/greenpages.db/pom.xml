@@ -30,9 +30,6 @@
                 <artifactId>maven-bundle-plugin</artifactId>
                 <configuration>
                     <instructions>
-                    	<Import-Bundle>
-							com.springsource.org.eclipse.persistence.jpa;version="[2, 3)"
-                    	</Import-Bundle>
                         <Import-Package>
                             org.h2;version="[1.0.71,2)",
 							*
@@ -45,21 +42,9 @@
 
 	<dependencies>
 		<dependency>
-			<groupId>javax.persistence</groupId>
-			<artifactId>com.springsource.javax.persistence</artifactId>
-		</dependency>
-		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>org.springframework.spring-library</artifactId>
 			<type>libd</type>
-		</dependency>
-		<dependency>
-			<groupId>org.eclipse.persistence</groupId>
-			<artifactId>com.springsource.org.eclipse.persistence</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.eclipse.persistence</groupId>
-			<artifactId>com.springsource.org.eclipse.persistence.jpa</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.commons</groupId>

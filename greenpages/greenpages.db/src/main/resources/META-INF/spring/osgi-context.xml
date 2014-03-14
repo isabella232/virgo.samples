@@ -5,6 +5,20 @@
 		http://www.springframework.org/schema/osgi http://www.springframework.org/schema/osgi/spring-osgi.xsd"
 	xmlns:osgi="http://www.springframework.org/schema/osgi">
 
-	<osgi:service ref="dataSource" interface="javax.sql.DataSource"/>
+	<!-- TODO 2.1 export spring bean "dataSource" with interface "javax.sql.DataSource" -->
+
+	<!-- TODO 2.2 add OSGi console commands "execute" and "queryForInt"
+	<osgi:service ref="sqlCommandProvider" auto-export="all-classes">
+		<osgi:service-properties>
+			<entry key="osgi.command.scope">
+				<value>sql</value>
+			</entry>
+			<entry key="osgi.command.function">
+				<array value-type="java.lang.String">
+				</array>
+			</entry>
+		</osgi:service-properties>
+	</osgi:service>
+	-->
 
 </beans>
