@@ -5,12 +5,6 @@
 		http://www.springframework.org/schema/osgi http://www.springframework.org/schema/osgi/spring-osgi.xsd"
 	xmlns:osgi="http://www.springframework.org/schema/osgi">
 
-	<!-- import the DataSource from OSGi -->
-	<osgi:reference id="dataSource" interface="javax.sql.DataSource"/>
-	
-
-	<!-- export the directory bean to OSGi under the Directory interface -->
-	<osgi:service ref="directory" interface="greenpages.Directory"/>
-
+	<!-- TODO 3.1 Wire OSGi services -->
 
 </beans>

@@ -95,12 +95,6 @@
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
-			<groupId>org.eclipse.virgo</groupId>
-			<artifactId>greenpages.jpa</artifactId>
-			<version>${project.version}</version>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
 			<groupId>org.junit</groupId>
 			<artifactId>com.springsource.org.junit</artifactId>
 			<scope>test</scope>

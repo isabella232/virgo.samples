@@ -5,8 +5,7 @@
 		http://www.springframework.org/schema/osgi http://www.springframework.org/schema/osgi/spring-osgi.xsd"
 	xmlns:osgi="http://www.springframework.org/schema/osgi">
 
-	<!-- uncomment the line below to publish the mock Directory into the OSGi service registry -->
-	
-	<!-- <osgi:service interface="greenpages.Directory" ref="directory"/> --> 
-	                                                                  
+	<!-- TODO 3.1 Deactivate mock -->
+	<osgi:service interface="greenpages.Directory" ref="directory"/>
+  
 </beans>
