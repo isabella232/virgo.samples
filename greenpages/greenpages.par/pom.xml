@@ -53,6 +53,7 @@
 
 	<build>
 		<plugins>
+<!-- TODO 4.1 Enable the maven-par-plugin
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-par-plugin</artifactId>
@@ -61,6 +62,7 @@
 					<applicationSymbolicName>greenpages</applicationSymbolicName>
 				</configuration>
 			</plugin>
+ -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-dependency-plugin</artifactId>
