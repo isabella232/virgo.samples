@@ -5,6 +5,6 @@
 		http://www.springframework.org/schema/osgi http://www.springframework.org/schema/osgi/spring-osgi.xsd"
 	xmlns:osgi="http://www.springframework.org/schema/osgi">
 
-	<!-- TODO 0.3 export spring bean "directory" with interface "greenpages.Directory" -->
+	<!-- TODO 0.2 export spring bean "directory" with interface "greenpages.Directory" -->
 
 </beans>
