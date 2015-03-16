@@ -1,0 +1,144 @@
+Virgo recipe for "Building a RESTful Web Service"
+=================================================
+
+image:http://www.eclipse.org/virgo/images/virgo-logo.png["Virgo Homepage"]
+
+== Acknowledgements
+
+This guide is inspired by http://spring.io/guides/gs/rest-service/["Building a RESTful Web Service"] from the https://spring.io/[Spring] https://spring.io/guides/[Guides].
+
+== RESTful Web Service
+
+The original guide uses http://projects.spring.io/spring-boot/[Spring Boot] to bootstrap the demo application. This guide shows what needs to be done to get the "RESTful Web Service" up and running on Virgo.
+
+== Shopping list
+
+* https://www.eclipse.org/virgo/download/[Virgo Server]
+* https://wiki.eclipse.org/Virgo/Source#Virgo_git_Repositories[Sample Applications]
+* https://spring.io/tools/[Spring Tool Suite™]
+* https://maven.apache.org/[Apache Maven]
+
+NOTE: Only Virgo Server for Apache Tomcat and Virgo Jetty Server are supported by the Virgo Tooling.
+
+== Ingredients
+
+* http://spring.io/guides/gs/rest-service/[Original "Building a RESTful Web Service"]
+* Spring configuration
+* Web application configuration
+* OSGi manifest
+
+== Preparations
+
+Install the Virgo server into some directory - let's say into `VIRGO_HOME`.
+
+Start your Spring Tool Suite™ and add the http://wiki.eclipse.org/Virgo/Tooling[Virgo Tooling] to your IDE.
+
+NOTE: For the impatient: This is the http://download.eclipse.org/virgo/release/tooling[update site] URL: http://download.eclipse.org/virgo/release/tooling.
+
+"Define a new server" within the IDE and choose the directory of the previously installed Virgo server `VIRGO_HOME`.
+
+Clone the code from the Git repository: http://wiki.eclipse.org/Virgo/Source#Virgo_git_Repositories[Sample Applications].
+
+----
+$ cd ~/MyAwesomeProjectDirectory/
+$ git clone git://git.eclipse.org/gitroot/virgo/org.eclipse.virgo.samples.git
+$ cd org.eclipse.virgo.samples
+----
+
+Add the necessary dependencies to your Virgo installation in `VIRGO_HOME` with Maven:
+
+----
+$ export VIRGO_HOME=...
+$ mvn -f virgo-setup.xml dependency:copy
+----
+
+Now you can `Import (Existing Maven Projects)` the rest guide project into your IDE. The project folder is  called `guide-rest-service` and lies directly in the "Sample Applications" folder (`org.eclipse.virgo.samples`).
+
+NOTE: Before you can drag'n'drop the project onto your freshly created Virgo Server you have to `Virgo -> Add OSGi Project Bundle Nature` (via a right click on the project) within your IDE.
+
+== Directions
+
+Virgo has no support for Spring's `@EnableAutoConfiguration`, so you have to be more explicit than in the Spring Boot version of this guide - after all, Virgo is an OSGi runtime and every bundle needs to declare its needs in the `META-INF/MANIFEST.MF`.
+Basically, you have to specify necessary dependencies (via `Import-Package` or `Import-Bundle` headers) and the `Web-ContextPath` the REST service application wants to be published on.
+
+[source,txt]
+----
+Import-Bundle: org.springframework.beans,
+org.springframework.context,
+org.springframework.core,
+org.springframework.web,
+org.springframework.webmvc
+Import-Package: org.eclipse.virgo.web.dm,
+ com.fasterxml.jackson.annotation,
+ org.springframework.stereotype,
+ org.springframework.web.bind.annotation
+Web-ContextPath: /restservice-guide
+----
+
+You can mix and match the Virgo specific header `Import-Bundle` and OSGi standard header `Import-Package` within the `MANIFEST.MF`. In the sample the fine-tuning of the `MANIFEST.MF` is done within the Maven `pom.xml`.
+
+NOTE: If you intend to run your bundles in different OSGi containers you have to limit yourself to the OSGi standard headers.
+
+Next step is to configure the servlet container via `WEB-INF/web.xml`:
+
+[source,xml]
+----
+include::../resources/WEB-INF/web.xml[]
+----
+
+NOTE: The most important parameter is the `contextClass` which is *not* the default from the Spring Framework, but `org.eclipse.virgo.web.dm.ServerOsgiBundleXmlWebApplicationContext`.
+
+[source,xml]
+----
+<context-param>
+    <param-name>contextClass</param-name>
+    <param-value>org.eclipse.virgo.web.dm.ServerOsgiBundleXmlWebApplicationContext</param-value>
+</context-param>[]
+----
+
+Finally the Spring web application context.:
+
+[source,xml]
+----
+include::../resources/WEB-INF/spring/appServlet/servlet-context.xml[]
+----
+
+Within the `servlet-context.xml` we define a single message converter `jacksonMessageConverter` using Jackson 2:
+
+[source,xml]
+----
+<message-converters register-defaults="false">
+    <beans:bean id="jackson2MessageConverter" class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter" />
+</message-converters>
+----
+
+== Let's taste
+
+Start the Virgo server inside the Springsource Tool Suite to appreciate what you build.
+With `curl` and the command line simply run the following command within the project's directory:
+
+----
+$ curl -i -H "Accept: application/json" 'http://localhost:8080/restservice-guide/greeting?name=test'
+----
+
+You should see an output like:
+
+....
+HTTP/1.1 200 OK
+Server: Apache-Coyote/1.1
+Content-Type: application/json
+Transfer-Encoding: chunked
+Date: Mon, 12 Oct 2015 11:06:50 GMT
+
+{"id":2,"content":"Hello, test!"}%
+....
+
+== Maven Build ==
+
+We use Maven to build the application:
+
+----
+$ mvn package
+----
+
+Instead of running the sample within the Eclipse IDE you can build the application with Maven and drop the artifact `guide-rest-service-0.1.0.BUILD-SNAPSHOT.jar` into the Virgo `pickup` folder. This is all you need to do to run your REST application in a brand-new Virgo installation.
