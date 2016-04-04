@@ -1,0 +1,19 @@
+Manifest-Version: 1.0
+Bundle-Version: 3.6.4.RELEASE
+Bundle-Name: Web
+Bundle-ManifestVersion: 2
+Bundle-SymbolicName: org.eclipse.virgo.jetty.sample.tags
+Web-ContextPath: taglibs
+Excluded-Exports: *
+Require-TldBundle: org.springframework.web.servlet
+Import-Template: 
+ org.springframework.*;version="[3.1.0, 4)",
+ org.eclipse.virgo.web.*;version="[3.0.0,4.0.0)",
+ javax.servlet.*;version="[2.5.0,3.0.0)"
+Import-Package: 
+ org.springframework.context.config;version="[3.1.0, 4)", 
+ org.springframework.web.servlet;version="[3.1.0, 4)",
+ org.springframework.web.servlet.tags.form;version="[3.1.0, 4)",
+ org.springframework.core;version="[3.1.0, 4)"
+Import-Bundle:
+ org.springframework.context;version="[3.1.0, 4)"
