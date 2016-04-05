@@ -1,0 +1,56 @@
+= Virgo recipe for "XYZ"
+
+image:http://www.eclipse.org/virgo/images/virgo-logo.png["Virgo Homepage"]
+
+== Acknowledgements
+
+This guide is inspired by https://spring.io/guides/gs/xyz/["Getting Started - XYZ"] from the https://spring.io/[Spring] https://spring.io/guides[Guides].
+
+== Intro
+
+TBD
+
+== Shopping list
+
+* http://www.eclipse.org/downloads/packages/eclipse-ide-java-ee-developers/mars2[Eclipse IDE for Java EE Developers]
+* https://www.eclipse.org/virgo/download/[Virgo Server]
+* http://wiki.eclipse.org/Virgo/Source#Virgo_git_Repositories[Sample Applications]
+
+NOTE: Only Virgo Server for Apache Tomcat and Virgo Jetty Server are supported by the Virgo Tooling.
+
+== Ingredients
+
+* https://spring.io/guides/gs/xyz/[Original "Getting Started - XYZ"]
+* TBD
+
+== Preparations
+
+=== Get the code
+
+Clone the code from http://wiki.eclipse.org/Virgo/Source#Virgo_git_Repositories[Sample Applications] with Git.
+
+----
+git clone git://git.eclipse.org/gitroot/virgo/org.eclipse.virgo.samples.git
+----
+
+=== Create a Virgo runtime
+
+Create your Virgo runtime for this recipe.
+
+TBD
+
+=== Setup your Eclipse
+
+Start your Eclipse IDE and add the http://wiki.eclipse.org/Virgo/Tooling[Virgo Tooling] to your IDE.
+
+NOTE: For the impatient: This is the http://download.eclipse.org/virgo/release/tooling[update site] URL: http://download.eclipse.org/virgo/release/tooling.
+
+"Define a new server" within the IDE and choose the directory of the previously chosen Virgo installation `VIRGO_HOME`.
+
+=== Import the Code
+
+TBD
+
+== Directions
+
+TBD

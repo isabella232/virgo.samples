@@ -1,0 +1,27 @@
+// add the build task 'clean'
+apply plugin: 'base'
+
+// add the build task 'dockerize'
+apply plugin: "com.eclipsesource.dockerizor"
+
+dockerizor {
+	repository = 'virgo-recipe/xyz-runtime'
+	maintainer = 'Florian Waibel <fwaibel@eclipsesource.com>'
+	description = 'Virgo Recipe XYZ (runtime-only) created with Gradle Plugin: com.eclipsesource.dockerizor'
+	
+	javaImage = 'java:openjdk-8u72-jre'
+
+    createLocalCopy = true
+
+	virgoFlavour = 'VTS'
+	virgoVersion = 'latest'
+
+	removeAdminConsole = false
+}
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+}

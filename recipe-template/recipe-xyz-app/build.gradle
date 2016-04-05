@@ -1,0 +1,32 @@
+// add the build task 'clean'
+apply plugin: 'base'
+
+// add the build task 'dockerize'
+apply plugin: "com.eclipsesource.dockerizor"
+
+dockerize.dependsOn ':org.eclipse.virgo.samples.recipe.xyz:build'
+
+dockerizor {
+	repository = 'virgo-recipe/xyz-app'
+	maintainer = 'Florian Waibel <fwaibel@eclipsesource.com>'
+    description = 'Virgo Recipe XYZ created with Gradle Plugin: com.eclipsesource.dockerizor'
+
+	javaImage = 'java:openjdk-8u72-jre'
+
+    createLocalCopy = true
+
+	virgoFlavour = 'VTS'
+	virgoVersion = 'latest'
+
+	pickupFiles = ['recipe-xyz.plan']
+
+	removeAdminConsole = false
+}
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	repositoryUsr project(':org.eclipse.virgo.samples.recipe.xyz')
+}
