@@ -7,7 +7,9 @@ buildscript {
 	}
 	dependencies {
 		classpath "gradle.plugin.org.eclipse.virgo.bundlor:bundlor-plugin:0.2"
-		classpath "gradle.plugin.com.eclipsesource.dockerizor:dockerizor:0.4"
+		if (System.properties['eclipse.build'] != 'true') {
+			classpath "gradle.plugin.com.eclipsesource.dockerizor:dockerizor:0.4"
+		}
 	}
 }
 
@@ -16,9 +18,11 @@ ext.virgoProjects = [
 ]
 
 ext.dockerProjects = [
-	project(':runtime-only'),
-	project(':app'),
 ]
+if (System.properties['eclipse.build'] != 'true') {
+	ext.dockerProjects + project(':runtime-only')
+	ext.dockerProjects + project(':app')
+}
 
 configure(virgoProjects + dockerProjects) {
 	repositories {
@@ -135,5 +139,5 @@ configure(virgoProjects) {
 }
 
 task wrapper(type: Wrapper) {
-    gradleVersion = '2.0'
+    gradleVersion = '2.10'
 }

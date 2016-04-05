@@ -1,1 +1,5 @@
-include 'web-bundle', 'runtime-only', 'app'
+include 'web-bundle'
+
+if (System.properties['eclipse.build'] != 'true') {
+	include 'runtime-only', 'app'
+}
