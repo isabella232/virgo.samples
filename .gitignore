@@ -1,7 +1,14 @@
 */src/main/resources/META-INF/MANIFEST.MF
 */src/test/resources/META-INF/TEST.MF
 junit*.properties
-target
+target/
+build/
+bin/
+.gradle/
+.settings/
+.classpath
+.project
+.springbeans
 integration-repo
 ivy-cache
 derby.log

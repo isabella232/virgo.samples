@@ -1,5 +1,6 @@
-Virgo recipe for "Uploading Files"
-==================================
+:virgo-homepage: https://eclipse.org/virgo
+
+== Virgo recipe for "Uploading Files"
 
 image:http://www.eclipse.org/virgo/images/virgo-logo.png["Virgo Homepage"]
 
@@ -37,8 +38,9 @@ NOTE: For the impatient: This is the http://download.eclipse.org/virgo/release/t
 
 Clone the code from http://wiki.eclipse.org/Virgo/Source#Virgo_git_Repositories[Sample Applications] with Git.
 
+[source,sh]
 ----
-git clone git://git.eclipse.org/gitroot/virgo/org.eclipse.virgo.samples.git
+$ git clone git://git.eclipse.org/gitroot/virgo/org.eclipse.virgo.samples.git
 ----
 
 Afterwards "Import (Existing Maven Projects)" living inside the folder `guide-uploading-files` into your IDE.
@@ -53,49 +55,34 @@ Last but not least Virgo is an OSGi runtime and every bundle needs to be explici
 
 This is mostly about specifying necessary `Import-Package` and the `Web-ContextPath` the file upload application wants to be published.
 
+[[app-listing]]
+.template.mf
 [source,txt]
 ----
-Import-Bundle: org.springframework.beans,
- org.springframework.context,
- org.springframework.web,
- org.springframework.web.servlet
-Import-Package: org.eclipse.virgo.web.dm,
- org.springframework.core.io;version="[3.1,4)",
- org.springframework.stereotype;version="[3.1,4)",
- org.springframework.util;version="[3.1,4)",
- org.springframework.web.bind.annotation;version="[3.1,4)",
- org.springframework.web.client;version="[3.1,4)",
- org.springframework.web.multipart;version="[3.1,4)"
-Web-ContextPath: /upload-guide[]
+include::../../org.eclipse.virgo.samples.recipe.uploading/template.mf[]
 ----
 
-You can mix and match the Virgo specific header `Import-Bundle` and OSGi standard header `Import-Package` within the `MANIFEST.MF`. In the sample the fine-tuning of the
-`MANIFEST.MF` is done within the Maven `pom.xml`.
+You can mix and match the Virgo specific header `Import-Bundle` and OSGi standard header `Import-Package` within the `MANIFEST.MF`.
+In the sample the fine-tuning of the `MANIFEST.MF` is done within the Bundlor `template.mf`.
 
 NOTE: If you intend to run your bundles in different OSGi containers you have to limit yourself to the OSGi standard headers.
 
 Next step is to configuring the servlet container via `WEB-INF/web.xml`:
 
 [source,xml]
+.web.xml
 ----
-include::../resources/WEB-INF/web.xml[]
+include::../../org.eclipse.virgo.samples.recipe.uploading/src/main/resources/WEB-INF/web.xml[]
 ----
+<1> Virgo specific `contextClass`
 
 NOTE: Most important the `contextClass` which is *not* the default from the Spring Framework, but `org.eclipse.virgo.web.dm.ServerOsgiBundleXmlWebApplicationContext`.
-
-[source,xml]
-----
-<context-param>
-    <param-name>contextClass</param-name>
-    <param-value>org.eclipse.virgo.web.dm.ServerOsgiBundleXmlWebApplicationContext</param-value>
-</context-param>[]
-----
 
 Finally the Spring web application context. Nothing Virgo specific here:
 
 [source,xml]
 ----
-include::../resources/WEB-INF/spring/appServlet/servlet-context.xml[]
+include::../../org.eclipse.virgo.samples.recipe.uploading/src/main/resources/WEB-INF/spring/appServlet/servlet-context.xml[]
 ----
 
 == Let's taste
@@ -104,21 +91,23 @@ For easy client-side consumption of the file upload you can use the `FileUploade
 
 [source,java]
 ----
-include::../java/org/eclipse/virgo/guides/uploading/internal/FileUploader.java[]
+include::../../org.eclipse.virgo.samples.recipe.uploading/src/main/java/org/eclipse/virgo/samples/recipe/uploading/internal/FileUploader.java[tags=type]
 ----
 
 NOTE: Please see the original guide https://spring.io/guides/gs/uploading-files/["Getting Started - Uploading Files"] for more background information about this client.
 
 There is an easy way to use the `FileUploader` with Maven:
 
+[source,sh]
 ----
-$ mvn package exec:java
+$ ./gradlew run
 ----
 
 Or if you are more used to `curl` and the command line simply run the following command within the project's directory.
 
+[source,sh]
 ----
-$ curl -F "name=sample.txt" -F "file=@sample.txt" http://localhost:8080/upload-guide/upload
+$ curl -F "name=sample.txt" -F "file=@org.eclipse.virgo.samples.recipe.uploading/sample.txt" http://localhost:8080/upload-guide/upload
 ----
 
 Either way you should see the following output independent of your choice:

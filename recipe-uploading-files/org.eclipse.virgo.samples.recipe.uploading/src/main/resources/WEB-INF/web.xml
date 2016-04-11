@@ -12,7 +12,7 @@
 
     <context-param>
         <param-name>contextClass</param-name>
-        <param-value>org.eclipse.virgo.web.dm.ServerOsgiBundleXmlWebApplicationContext</param-value>
+        <param-value>org.eclipse.virgo.web.dm.ServerOsgiBundleXmlWebApplicationContext</param-value><!--1-->
     </context-param>
 
     <!-- Creates the Spring Container shared by all Servlets and Filters -->

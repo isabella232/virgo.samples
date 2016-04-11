@@ -1,4 +1,4 @@
-package org.eclipse.virgo.guides.uploading.internal;
+package org.eclipse.virgo.samples.recipe.uploading.internal;
 
 import java.io.FileNotFoundException;
 
@@ -7,6 +7,7 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
+//tag::type[]
 public class FileUploader {
 
     public static void main(String[] args) throws FileNotFoundException {
@@ -24,3 +25,4 @@ public class FileUploader {
         System.out.println(response);
     }
 }
+//end::type[]

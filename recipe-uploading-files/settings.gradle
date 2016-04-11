@@ -1,0 +1,1 @@
+include 'org.eclipse.virgo.samples.recipe.uploading', 'recipe-uploading-files-runtime', 'recipe-uploading-files-app'

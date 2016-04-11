@@ -1,4 +1,4 @@
-package org.eclipse.virgo.guides.uploading;
+package org.eclipse.virgo.samples.recipe.uploading;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
