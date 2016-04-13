@@ -1,6 +1,6 @@
 :virgo-homepage: https://eclipse.org/virgo
-:guide-short-name: Getting Started - Uploading Files
-:recipe-name: uploading-files
+:guide-short-name: uploading-files
+:recipe-name: Getting Started - Uploading Files
 :recipe-short-name: recipe-{guide-short-name}
 
 include::../../../recipe-template/src/asciidoc/00_title.adoc[]
