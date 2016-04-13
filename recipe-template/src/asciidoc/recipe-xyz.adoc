@@ -1,56 +1,36 @@
-= Virgo recipe for "XYZ"
+:virgo-homepage: https://eclipse.org/virgo
+:guide-short-name: xyz
+:recipe-name: XYZ
+:recipe-short-name: recipe-{guide-short-name}
 
-image:http://www.eclipse.org/virgo/images/virgo-logo.png["Virgo Homepage"]
+include::../../../recipe-template/src/asciidoc/00_title.adoc[]
+include::../../../recipe-template/src/asciidoc/01_acknowledgements.adoc[]
 
-== Acknowledgements
-
-This guide is inspired by https://spring.io/guides/gs/xyz/["Getting Started - XYZ"] from the https://spring.io/[Spring] https://spring.io/guides[Guides].
-
-== Intro
+== {recipe-name}
 
 TBD
 
-== Shopping list
+include::../../../recipe-template/src/asciidoc/03_shopping-list.adoc[]
 
-* http://www.eclipse.org/downloads/packages/eclipse-ide-java-ee-developers/mars2[Eclipse IDE for Java EE Developers]
-* https://www.eclipse.org/virgo/download/[Virgo Server]
-* http://wiki.eclipse.org/Virgo/Source#Virgo_git_Repositories[Sample Applications]
-
-NOTE: Only Virgo Server for Apache Tomcat and Virgo Jetty Server are supported by the Virgo Tooling.
-
-== Ingredients
-
-* https://spring.io/guides/gs/xyz/[Original "Getting Started - XYZ"]
-* TBD
+include::../../../recipe-template/src/asciidoc/04_ingredients.adoc[]
+* TBD - additional ingredient A
+* TBD - additional ingredient B
 
 == Preparations
 
-=== Get the code
-
-Clone the code from http://wiki.eclipse.org/Virgo/Source#Virgo_git_Repositories[Sample Applications] with Git.
-
-----
-git clone git://git.eclipse.org/gitroot/virgo/org.eclipse.virgo.samples.git
-----
-
-=== Create a Virgo runtime
-
-Create your Virgo runtime for this recipe.
-
-TBD
-
-=== Setup your Eclipse
-
-Start your Eclipse IDE and add the http://wiki.eclipse.org/Virgo/Tooling[Virgo Tooling] to your IDE.
-
-NOTE: For the impatient: This is the http://download.eclipse.org/virgo/release/tooling[update site] URL: http://download.eclipse.org/virgo/release/tooling.
-
-"Define a new server" within the IDE and choose the directory of the previously chosen Virgo installation `VIRGO_HOME`.
-
-=== Import the Code
-
-TBD
+include::../../../recipe-template/src/asciidoc/051_get-the-code.adoc[]
+include::../../../recipe-template/src/asciidoc/052_create-recipe-runtime.adoc[]
+include::../../../recipe-template/src/asciidoc/053_create-eclipse-project-metadata.adoc[]
+include::../../../recipe-template/src/asciidoc/054_prepare-virgo-tooling.adoc[]
+include::../../../recipe-template/src/asciidoc/055_import-the-code.adoc[]
+include::../../../recipe-template/src/asciidoc/056_create-new-virgo-server.adoc[]
 
 == Directions
 
 TBD
+
+== Let's taste
+
+TBD
+
+include::../../../recipe-template/src/asciidoc/08_dockerize_recipe.adoc[]

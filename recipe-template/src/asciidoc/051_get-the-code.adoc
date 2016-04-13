@@ -1,0 +1,13 @@
+
+=== Get the code
+
+Clone the code from the Git repository: http://wiki.eclipse.org/Virgo/Source#Virgo_git_Repositories[Sample Git repository]:
+
+[source,sh]
+----
+$ cd ~/MyAwesomeProjectDirectory/
+$ git clone git://git.eclipse.org/gitroot/virgo/org.eclipse.virgo.samples.git
+$ cd org.eclipse.virgo.samples
+----
+
+Change into the directory containing the source of this recipe: +{recipe-short-name}+ and your are good to go.

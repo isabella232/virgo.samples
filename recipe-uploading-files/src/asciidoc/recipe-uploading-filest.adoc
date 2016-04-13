@@ -1,52 +1,31 @@
 :virgo-homepage: https://eclipse.org/virgo
+:guide-short-name: Getting Started - Uploading Files
+:recipe-name: uploading-files
+:recipe-short-name: recipe-{guide-short-name}
 
-== Virgo recipe for "Uploading Files"
+include::../../../recipe-template/src/asciidoc/00_title.adoc[]
+include::../../../recipe-template/src/asciidoc/01_acknowledgements.adoc[]
 
-image:http://www.eclipse.org/virgo/images/virgo-logo.png["Virgo Homepage"]
+== {recipe-name}
 
-== Acknowledgements
+The original guide uses https://projects.spring.io/spring-boot/[Spring Boot] to bootstrap the demo application. This guide walks through the necessary
+additional steps/configuration to get "{recipe-name}" up and running on Virgo.
 
-This guide is inspired by https://spring.io/guides/gs/uploading-files/["Getting Started - Uploading Files"] from the https://spring.io/[Spring] https://spring.io/guides[Guides].
+include::../../../recipe-template/src/asciidoc/03_shopping-list.adoc[]
 
-== Multi-part file uploads
-
-The original guide uses http://projects.spring.io/spring-boot/[Spring Boot] to bootstrap the demo application. This guide walks through the necessary
-additional steps/configuration to get "Uploading Files" up and running on Virgo.
-
-== Shopping list
-
-* https://www.eclipse.org/virgo/download/[Virgo Server]
-* http://wiki.eclipse.org/Virgo/Source#Virgo_git_Repositories[Sample Applications]
-* http://spring.io/tools/[Spring Tool Suite™]
-
-NOTE: Only Virgo Server for Apache Tomcat and Virgo Jetty Server are supported by the Virgo Tooling.
-
-== Ingredients
-
-* https://spring.io/guides/gs/uploading-files/[Original "Getting Started - Uploading Files"]
+include::../../../recipe-template/src/asciidoc/04_ingredients.adoc[]
 * Spring configuration
 * Web application configuration
 * OSGi manifest
 
 == Preparations
 
-Install the Virgo server let's say into `VIRGO_HOME`. Start your Spring Tool Suite™ and add the http://wiki.eclipse.org/Virgo/Tooling[Virgo Tooling] to your IDE.
-
-NOTE: For the impatient: This is the http://download.eclipse.org/virgo/release/tooling[update site] URL: http://download.eclipse.org/virgo/release/tooling.
-
-"Define a new server" within the IDE and choose the directory of the previously chosen Virgo installation `VIRGO_HOME`.
-
-Clone the code from http://wiki.eclipse.org/Virgo/Source#Virgo_git_Repositories[Sample Applications] with Git.
-
-[source,sh]
-----
-$ git clone git://git.eclipse.org/gitroot/virgo/org.eclipse.virgo.samples.git
-----
-
-Afterwards "Import (Existing Maven Projects)" living inside the folder `guide-uploading-files` into your IDE.
-
-NOTE: Before you can drag'n'drop the project onto your freshly created Virgo Server you have to Virgo -> Add OSGi Project Bundle Nature (via a right click on the project)
-within your IDE.
+include::../../../recipe-template/src/asciidoc/051_get-the-code.adoc[]
+include::../../../recipe-template/src/asciidoc/052_create-recipe-runtime.adoc[]
+include::../../../recipe-template/src/asciidoc/053_create-eclipse-project-metadata.adoc[]
+include::../../../recipe-template/src/asciidoc/054_prepare-virgo-tooling.adoc[]
+include::../../../recipe-template/src/asciidoc/055_import-the-code.adoc[]
+include::../../../recipe-template/src/asciidoc/056_create-new-virgo-server.adoc[]
 
 == Directions
 
@@ -55,7 +34,6 @@ Last but not least Virgo is an OSGi runtime and every bundle needs to be explici
 
 This is mostly about specifying necessary `Import-Package` and the `Web-ContextPath` the file upload application wants to be published.
 
-[[app-listing]]
 .template.mf
 [source,txt]
 ----
@@ -67,7 +45,7 @@ In the sample the fine-tuning of the `MANIFEST.MF` is done within the Bundlor `t
 
 NOTE: If you intend to run your bundles in different OSGi containers you have to limit yourself to the OSGi standard headers.
 
-Next step is to configuring the servlet container via `WEB-INF/web.xml`:
+Next step is to confiugre the servlet container via `WEB-INF/web.xml`:
 
 [source,xml]
 .web.xml
@@ -94,9 +72,9 @@ For easy client-side consumption of the file upload you can use the `FileUploade
 include::../../org.eclipse.virgo.samples.recipe.uploading/src/main/java/org/eclipse/virgo/samples/recipe/uploading/internal/FileUploader.java[tags=type]
 ----
 
-NOTE: Please see the original guide https://spring.io/guides/gs/uploading-files/["Getting Started - Uploading Files"] for more background information about this client.
+NOTE: Please see the original guide https://spring.io/guides/gs/{guide-short-name}/["{recipe-name}"] for more background information about this client.
 
-There is an easy way to use the `FileUploader` with Maven:
+There is an easy way to use the `FileUploader` with Gradle:
 
 [source,sh]
 ----
@@ -115,3 +93,5 @@ Either way you should see the following output independent of your choice:
 ....
 You successfully uploaded sample.txt into sample.txt-uploaded !
 ....
+
+include::../../../recipe-template/src/asciidoc/08_dockerize_recipe.adoc[]

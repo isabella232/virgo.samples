@@ -1,0 +1,4 @@
+
+== Acknowledgements
+
+This guide is inspired by https://spring.io/guides/gs/{guide-short-name}/["{recipe-name}"] from the https://spring.io/[Spring] https://spring.io/guides/[Guides].

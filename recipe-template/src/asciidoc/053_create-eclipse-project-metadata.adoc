@@ -1,0 +1,9 @@
+
+=== Create Eclipse Project Metadata
+
+Create the Eclipse IDE metadata with:
+
+[source,sh]
+----
+$ ./gradlew eclipse
+----

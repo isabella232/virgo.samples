@@ -1,0 +1,4 @@
+
+== Ingredients
+
+* https://spring.io/guides/gs/{guide-short-name}/[Original "{recipe-name}"]

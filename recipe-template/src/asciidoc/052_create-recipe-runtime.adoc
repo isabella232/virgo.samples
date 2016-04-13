@@ -1,0 +1,9 @@
+
+=== Create the Custom Virgo Runtime
+
+Create your own Virgo runtime with http://gradle.org/[Gradle] and https://github.com/eclipsesource/dockerizor[Dockerizor]
+and https://www.docker.com/[Docker]: +$ ./gradlew :{recipe-short-name}-runtime:dockerize+
+
+NOTE: You'll need a Docker daemon running on port 4243 in order to create your custom Virgo runtime. For more information please refer to the https://github.com/eclipsesource/dockerizor/blob/master/README.md[Dockerizor documentation].
+
+Extract the `tar` archive of the custom Virgo runtime available from the runtime build directory: +{recipe-short-name}-runtime/build+ into some directory - let's say into `VIRGO_HOME`.
