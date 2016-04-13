@@ -1,0 +1,14 @@
+dockerizor {
+	repository = 'virgo-recipe/recipe-rest-service-runtime'
+	description = 'Virgo Recipe REST service (runtime-only) created with Gradle Plugin: com.eclipsesource.dockerizor'
+}
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	repositoryUsr group: "com.fasterxml.jackson.core", name: "jackson-core", version: jacksonCoreVersion
+	repositoryUsr group: "com.fasterxml.jackson.core", name: "jackson-annotations", version: jacksonAnnotationsVersion
+	repositoryUsr group: "com.fasterxml.jackson.core", name: "jackson-databind", version: jacksonDatabindVersion
+}

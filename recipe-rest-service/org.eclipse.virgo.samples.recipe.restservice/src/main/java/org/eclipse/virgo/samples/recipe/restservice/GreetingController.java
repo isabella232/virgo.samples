@@ -1,4 +1,4 @@
-package org.eclipse.virgo.guides.restservice;
+package org.eclipse.virgo.samples.recipe.restservice;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;

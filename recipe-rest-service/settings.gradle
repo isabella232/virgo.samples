@@ -1,0 +1,1 @@
+include 'org.eclipse.virgo.samples.recipe.restservice', 'recipe-rest-service-runtime', 'recipe-rest-service-app'

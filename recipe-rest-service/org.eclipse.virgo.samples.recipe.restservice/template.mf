@@ -1,0 +1,14 @@
+Bundle-Version: 0.1
+Bundle-Name: Virgo Recipe REST service
+Bundle-SymbolicName: org.eclipse.virgo.samples.recipe.restservice
+Bundle-Vendor: Eclipse Virgo
+Bundle-Version: 0.1.0.BUILD-SNAPSHOT
+Import-Bundle: org.springframework.beans,
+ org.springframework.context,
+ org.springframework.core,
+ org.springframework.web,
+ org.springframework.webmvc
+Import-Package: org.eclipse.virgo.web.dm,
+ com.fasterxml.jackson.annotation
+Web-ContextPath: /restservice-guide
+Bundle-Classpath: .
