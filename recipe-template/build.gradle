@@ -19,10 +19,7 @@ ext.virgoProjects = [
 	project(':org.eclipse.virgo.samples.recipe.xyz'),
 ]
 
-ext.dockerProjects = [
-	project(':recipe-xyz-runtime'),
-	project(':recipe-xyz-app'),
-]
+ext.dockerProjects = subprojects.findAll {it.name.contains('-runtime') || it.name.contains('-app')}
 
 configure(virgoProjects + dockerProjects) {
 	repositories {
