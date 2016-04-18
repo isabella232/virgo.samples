@@ -6,3 +6,5 @@ include 'org.eclipse.virgo.samples.recipe.bundle'
 include 'recipe-custom-virgo-runtime'
 include 'recipe-custom-virgo-app'
 // end::include_dockerized_runtimes[]
+
+include 'recipe-custom-virgo-runtime:com.rabbitmq.amqp.client-3.5.5'
