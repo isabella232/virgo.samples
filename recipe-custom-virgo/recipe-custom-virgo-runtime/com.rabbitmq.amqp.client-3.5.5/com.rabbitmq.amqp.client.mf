@@ -1,0 +1,10 @@
+Bundle-SymbolicName: com.rabbitmq.amqp.client
+Bundle-Name: RabbitMQ Java AMQP client library
+Bundle-Vendor: Eclipse Virgo
+Bundle-Version: ${version}
+Bundle-ManifestVersion: 2
+Import-Template: 
+ javax.security.*;version="0",
+ javax.net.*;version="0"
+Export-Template: 
+ com.rabbitmq.*;version="${version}"

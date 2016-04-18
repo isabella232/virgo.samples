@@ -1,0 +1,115 @@
+import groovy.jmx.builder.JmxBuilder
+
+import java.util.HashMap;
+import java.util.Map;
+import java.nio.file.Files
+import java.nio.file.Paths
+
+import javax.management.MBeanServerConnection
+import javax.management.MalformedObjectNameException;
+import javax.management.ObjectName
+import javax.management.openmbean.CompositeDataSupport;
+import javax.management.openmbean.TabularData
+import javax.management.remote.JMXConnector;
+
+// tag::custom_virgo_runtime_configuration[]
+dockerizor {
+	repository = 'virgo-recipe/custom-virgo-runtime' // <1>
+	description = 'Virgo Recipe Custom Virgo (runtime-only) created with Gradle Plugin: com.eclipsesource.dockerizor'
+
+	createLocalCopy = true // <2>
+}
+// end::custom_virgo_runtime_configuration[]
+
+repositories {
+	mavenCentral()
+}
+
+// tag::custom_virgo_runtime_dependencies[]
+dependencies {
+    repositoryExt("org.mongodb:mongo-java-driver:${mongoJavaDriverVersion}") // <1>
+    repositoryUsr files("com.rabbitmq.amqp.client-${rabbitmqAmqpClientVersion}/build/com.rabbitmq.amqp.client-${rabbitmqAmqpClientVersion}.jar") // <2>
+}
+// end::custom_virgo_runtime_dependencies[]
+
+task unzipRuntime(type: Copy, dependsOn: dockerize) {
+    doLast() {
+        def tarFile = new groovy.util.FileNameByRegexFinder().getFileNames("${->project.buildDir.absolutePath}", /.*\.tar/).get(0)
+        def outputDir = file("${buildDir}")
+
+        from tarTree(tarFile)
+        into outputDir
+    }
+}
+
+// tag::task_start_virgo_runtime[]
+task startVirgoRuntime(type:Exec, dependsOn: unzipRuntime) {
+    workingDir "${buildDir}/virgo"
+
+    //on Uni*
+    commandLine './bin/startup.sh'
+}
+// end::task_start_virgo_runtime[]
+
+// OSGi-ify 3rd party dependencies
+
+subprojects {
+	apply plugin: 'base'
+
+	repositories {
+	    mavenCentral()
+	    maven { url "http://build.eclipse.org/rt/virgo/maven/bundles/release" }
+	    maven { url "http://repository.springsource.com/maven/bundles/external" }
+	}
+
+	configurations {
+	    bundlorRuntime
+	
+	    sourceBundle
+	}
+	
+	dependencies {
+	    bundlorRuntime('org.eclipse.virgo.bundlor:org.eclipse.virgo.bundlor.commandline:1.1.2.RELEASE')
+	    bundlorRuntime('org.eclipse.virgo.bundlor:org.eclipse.virgo.bundlor:1.1.2.RELEASE')
+	    bundlorRuntime('org.eclipse.virgo.bundlor:org.eclipse.virgo.bundlor.blint:1.1.2.RELEASE')
+	}
+	
+	def artifactName = project.name.split('-')[0]
+	def artifactVersion = project.name.split('-')[1]
+
+	task createBuildDir() {
+	    doLast() {
+	        file(project.buildDir).mkdir()
+	    }
+	}
+
+	def outputFile = new File(file(project.buildDir), "${project.name}.jar")
+
+// tag::task_bundlor[]
+	task bundlor(type: JavaExec, dependsOn: createBuildDir) {
+	
+	    classpath = configurations.bundlorRuntime
+	
+	    main = 'org.eclipse.virgo.bundlor.commandline.Bundlor'
+	    args '-D', "version=${artifactVersion}"
+	    args '-i', "${->configurations.sourceBundle[0]}" // lazy GString to resolve the configuration at runtime
+	    args '-m', "${artifactName}.mf"
+	    args '-o', outputFile
+	}
+// end::task_bundlor[]
+
+// tag::task_deploy[]
+	task('deploy', dependsOn: bundlor) << {
+		def virgoHome = project.parent.buildDir.absolutePath + "/virgo"
+		System.getProperties().put("javax.net.ssl.trustStore", virgoHome + "/configuration/keystore") // <1>
+		def client = new JmxBuilder().connectorClient(port: 9875, properties:[])
+		client.connect([ 'jmx.remote.credentials' :  ['admin', 'admin' ] as String[] ]) // <2>
+		MBeanServerConnection server = client.getMBeanServerConnection()
+		ObjectName deployer = new ObjectName("org.eclipse.virgo.kernel:category=Control,type=Deployer"); // <3>
+		Object deploymentResult = server.invoke(deployer, "deploy", [outputFile.toURI().toString() ] as Object[],
+		[String.class.getName() ] as String[])
+	}
+// end::task_deploy[]
+
+	dockerize.dependsOn bundlor
+}

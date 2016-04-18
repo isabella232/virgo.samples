@@ -1,0 +1,16 @@
+// tag::custom_virgo_app_configuration[]
+dockerizor {
+	repository = 'virgo-recipe/custom-virgo-app' // <1>
+    description = 'Virgo Recipe custom Virgo created with Gradle Plugin: com.eclipsesource.dockerizor'
+
+	pickupFiles = ['recipe-custom-virgo.plan'] // <2>
+}
+// end::custom_virgo_app_configuration[]
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	repositoryUsr project(':org.eclipse.virgo.samples.recipe.bundle')
+}

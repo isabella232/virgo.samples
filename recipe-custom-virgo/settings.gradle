@@ -1,0 +1,8 @@
+// tag::include_bundles[]
+include 'org.eclipse.virgo.samples.recipe.bundle'
+// end::include_bundles[]
+
+// tag::include_dockerized_runtimes[]
+include 'recipe-custom-virgo-runtime'
+include 'recipe-custom-virgo-app'
+// end::include_dockerized_runtimes[]

@@ -1,0 +1,172 @@
+:virgo-homepage: https://eclipse.org/virgo
+:guide-short-name: custom-runtime
+:recipe-name: Create a Custom Virgo Runtime with Dockerizor
+:recipe-short-name: recipe-{guide-short-name}
+
+include::../../../../recipe-template/src/asciidoc/00_title.adoc[]
+
+== {recipe-name}
+
+This recipe shows how to create your own custom https://eclipse.org/virgo/[Virgo] runtime.
+
+== Shopping list
+* https://docker.io[Docker] Build, Ship, Run
+* https://gradle.org[Gradle] Build Automation
+* http://www.groovy-lang.org[Groovy] A multi-faceted language for the Java platform
+* https://www.eclipse.org/virgo/documentation/bundlor-documentation-1.1.2.RELEASE/docs/user-guide/html/index.html[Bundlor] Create OSGi Metadata
+* https://github.com/eclipsesource/dockerizor[Dockerizor] - Gradle plug-in to create a Docker image that includes an Eclipse Virgo container
+
+== Ingredients
+* Dockerizor configuration
+* Custom Gradle build tasks
+
+== Preparations
+
+include::../../../../recipe-template/src/asciidoc/051_get-the-code.adoc[]
+include::../../../../recipe-template/src/asciidoc/052_create-recipe-runtime.adoc[]
+include::../../../../recipe-template/src/asciidoc/053_create-eclipse-project-metadata.adoc[]
+include::../../../../recipe-template/src/asciidoc/054_prepare-virgo-tooling.adoc[]
+include::../../../../recipe-template/src/asciidoc/055_import-the-code.adoc[]
+include::../../../../recipe-template/src/asciidoc/056_create-new-virgo-server.adoc[]
+
+== A closer look
+
+This section describes the internal tools and configuration options available for creating a custom Virgo runtime.
+
+=== Shared Dockerizor configuration
+
+The build script +settings.gradle+ includes two Gradle projects for two Virgo runtimes:
+
+.settings.gradle
+[source,groovy,indent=0]
+----
+include::../../../settings.gradle[tags=include_dockerized_runtimes]
+----
+
+First: +recipe-custom-virgo-runtime+ used during development time - without the application bundles.
+And a 2nd one: +recipe-custom-virgo-app+ with the complete application packaged ready for production deployment.
+
+For convenience the shared configuration is done in the root Gradle build script: +build.gradle+:
+
+.build.gradle
+[source,groovy,indent=0]
+----
+include::../../../build.gradle[tags=dockerizor_confiugration]
+----
+<1> Adds the build task +clean+
+<2> Adds the build task +dockerize+
+<3> Docker base image
+
+=== Create the development time variant
+
+.build.gradle
+[source,groovy,indent=0]
+----
+include::../../../recipe-custom-virgo-runtime/build.gradle[tags=custom_virgo_runtime_configuration]
+----
+<1> Name of the generated Docker image
+<2> Creates local copy +${buildDir}/virgo-\{timestamp\}.tar+
+
+In the +dependencies+ section the provisioning of +repository/ext+ and +repository/usr+ takes place.
+The following sample demonstrates how to add:
+
+* an OSGi-ready library and
+* a library bundled during the custom runtime build.
+
+.build.gradle
+[source,groovy,indent=0]
+----
+include::../../../recipe-custom-virgo-runtime/build.gradle[tags=custom_virgo_runtime_dependencies]
+----
+<1> Adds OSGi-ready MongoDB driver available from Maven Central
+<2> Adds bundled RabbitMQ client from local build
+
+The task +startVirgoRuntime+ defined in the few Groovy lines:
+
+.build.gradle
+[source,groovy,indent=0]
+----
+include::../../../recipe-custom-virgo-runtime/build.gradle[tags=task_start_virgo_runtime]
+----
+
+allow to test drive the Virgo runtime
+
+[source,sh]
+----
+$ ./gradlew :recipe-custom-virgo-runtime:startVirgoRuntime
+----
+
+=== Bundle and deploy non OSGi-ready dependencies
+
+To be able to create and verify non OSGi-ready dependencies we need to
+
+* create OSGi metadata and
+* deploy the bundled jar file.
+
+Thus we added the tasks +bundlor+...
+
+[source,groovy,indent=0]
+----
+include::../../../recipe-custom-virgo-runtime/build.gradle[tags=task_bundlor]
+----
+
+and +deploy+.
+
+The +bundlor+ task creates OSGi metadata for a library specified via +sourceBundle+ inside the corresponding +build.gradle+.
+Let's say you want to bundle the RabbitMQ AMQP Client 3.5.5 available from Maven Central:
+
+.build.gradle
+[source,groovy,indent=0]
+----
+include::../../../recipe-custom-virgo-runtime/com.rabbitmq.amqp.client-3.5.5/build.gradle[]
+----
+
+from a +MANIFEST.MF+ template file:
+
+.com.rabbitmq.amqp.client.mf
+[source,txt]
+----
+include::../../../recipe-custom-virgo-runtime/com.rabbitmq.amqp.client-3.5.5/com.rabbitmq.amqp.client.mf[]
+----
+
+For more details about the Bundlor +template.mf+ syntax please see the https://www.eclipse.org/virgo/documentation/bundlor-documentation-1.1.2.RELEASE/docs/user-guide/html/index.html[Bundlor User Guide].
+
+The deploy task performs the deployment via JMX with a small portion of Groovy code:
+
+.build.gradle
+[source,groovy,indent=0]
+----
+include::../../../recipe-custom-virgo-runtime/build.gradle[tags=task_deploy]
+----
+<1> Configure SSL trust store
+<2> Create JMX client with Virgo default credentials
+<3> Create Virgo JMX deployer
+
+To deploy the generated bundle into a running sample runtime you can run the Gradle task +deploy+ like this:
+
+[source,sh]
+----
+$ ./gradlew :recipe-custom-virgo-runtime:com.rabbitmq.amqp.client-3.5.5:deploy
+----
+
+include::../../../../recipe-template/src/asciidoc/08_dockerize_recipe.adoc[]
+
+Virgo plan are a proven way to add the application bundles to a Virgo runtime.
+The snippet below shows the Gradle build file (Dockerizor configuration) needed to add such a plan file.
+
+.build.gradle
+[source,groovy,indent=0]
+----
+include::../../../recipe-custom-virgo-app/build.gradle[tags=custom_virgo_app_configuration]
+----
+<1> Name of the generated Docker image
+<2> Adds Virgo plan file to the Docker image
+
+Once the image is built with +./gradlew dockerize+ it can be started with Docker:
+
+[source,sh]
+----
+$ docker run -it --rm virgo-recipe/custom-virgo-app
+----
+
+Congratulations. You've successfully containerized your Virgo applications.
