@@ -3,28 +3,28 @@
 :recipe-name: Building RESTful Web Service
 :recipe-short-name: recipe-{guide-short-name}
 
-include::../../../recipe-template/src/asciidoc/00_title.adoc[]
-include::../../../recipe-template/src/asciidoc/01_acknowledgements.adoc[]
+include::../../../../recipe-template/src/docs/asciidoc/00_title.adoc[]
+include::../../../../recipe-template/src/docs/asciidoc/01_acknowledgements.adoc[]
 
 == {recipe-name}
 
 The original guide uses https://projects.spring.io/spring-boot/[Spring Boot] to bootstrap the demo application. This guide shows what needs to be done to get the "{recipe-name}" up and running on Virgo.
 
-include::../../../recipe-template/src/asciidoc/03_shopping-list.adoc[]
+include::../../../../recipe-template/src/docs/asciidoc/03_shopping-list.adoc[]
 
-include::../../../recipe-template/src/asciidoc/04_ingredients.adoc[]
+include::../../../../recipe-template/src/docs/asciidoc/04_ingredients.adoc[]
 * Spring configuration
 * Web application configuration
 * OSGi manifest
 
 == Preparations
 
-include::../../../recipe-template/src/asciidoc/051_get-the-code.adoc[]
-include::../../../recipe-template/src/asciidoc/052_create-recipe-runtime.adoc[]
-include::../../../recipe-template/src/asciidoc/053_create-eclipse-project-metadata.adoc[]
-include::../../../recipe-template/src/asciidoc/054_prepare-virgo-tooling.adoc[]
-include::../../../recipe-template/src/asciidoc/055_import-the-code.adoc[]
-include::../../../recipe-template/src/asciidoc/056_create-new-virgo-server.adoc[]
+include::../../../../recipe-template/src/docs/asciidoc/051_get-the-code.adoc[]
+include::../../../../recipe-template/src/docs/asciidoc/052_create-recipe-runtime.adoc[]
+include::../../../../recipe-template/src/docs/asciidoc/053_create-eclipse-project-metadata.adoc[]
+include::../../../../recipe-template/src/docs/asciidoc/054_prepare-virgo-tooling.adoc[]
+include::../../../../recipe-template/src/docs/asciidoc/055_import-the-code.adoc[]
+include::../../../../recipe-template/src/docs/asciidoc/056_create-new-virgo-server.adoc[]
 
 == Directions
 
@@ -97,4 +97,4 @@ Date: Mon, 12 Oct 2015 11:06:50 GMT
 {"id":2,"content":"Hello, test!"}%
 ....
 
-include::../../../recipe-template/src/asciidoc/08_dockerize_recipe.adoc[]
+include::../../../../recipe-template/src/docs/asciidoc/08_dockerize_recipe.adoc[]
