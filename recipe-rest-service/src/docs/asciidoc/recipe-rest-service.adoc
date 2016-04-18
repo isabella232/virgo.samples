@@ -34,7 +34,7 @@ Basically, you have to specify necessary dependencies (via `Import-Package` or `
 .template.mf
 [source,txt]
 ----
-include::../../org.eclipse.virgo.samples.recipe.restservice/template.mf[]
+include::../../../org.eclipse.virgo.samples.recipe.restservice/template.mf[]
 ----
 
 You can mix and match the Virgo specific header `Import-Bundle` and OSGi standard header `Import-Package` within the `MANIFEST.MF`. In the sample the fine-tuning of the `MANIFEST.MF` is done within the Maven `pom.xml`.
@@ -46,7 +46,7 @@ Next step is to configure the servlet container via `WEB-INF/web.xml`:
 [source,xml]
 .web.xml
 ----
-include::../../org.eclipse.virgo.samples.recipe.restservice/src/main/resources/WEB-INF/web.xml[]
+include::../../../org.eclipse.virgo.samples.recipe.restservice/src/main/resources/WEB-INF/web.xml[]
 ----
 
 NOTE: The most important parameter is the `contextClass` which is *not* the default from the Spring Framework, but `org.eclipse.virgo.web.dm.ServerOsgiBundleXmlWebApplicationContext`.
@@ -63,7 +63,7 @@ Finally the Spring web application context.:
 
 [source,xml]
 ----
-include::../../org.eclipse.virgo.samples.recipe.restservice/src/main/resources/WEB-INF/spring/appServlet/servlet-context.xml[]
+include::../../../org.eclipse.virgo.samples.recipe.restservice/src/main/resources/WEB-INF/spring/appServlet/servlet-context.xml[]
 ----
 
 Within the `servlet-context.xml` we define a single message converter `jacksonMessageConverter` using Jackson 2:

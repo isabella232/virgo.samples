@@ -3,29 +3,29 @@
 :recipe-name: Getting Started - Uploading Files
 :recipe-short-name: recipe-{guide-short-name}
 
-include::../../../recipe-template/src/asciidoc/00_title.adoc[]
-include::../../../recipe-template/src/asciidoc/01_acknowledgements.adoc[]
+include::../../../../recipe-template/src/docs/asciidoc/00_title.adoc[]
+include::../../../../recipe-template/src/docs/asciidoc/01_acknowledgements.adoc[]
 
 == {recipe-name}
 
 The original guide uses https://projects.spring.io/spring-boot/[Spring Boot] to bootstrap the demo application. This guide walks through the necessary
 additional steps/configuration to get "{recipe-name}" up and running on Virgo.
 
-include::../../../recipe-template/src/asciidoc/03_shopping-list.adoc[]
+include::../../../../recipe-template/src/docs/asciidoc/03_shopping-list.adoc[]
 
-include::../../../recipe-template/src/asciidoc/04_ingredients.adoc[]
+include::../../../../recipe-template/src/docs/asciidoc/04_ingredients.adoc[]
 * Spring configuration
 * Web application configuration
 * OSGi manifest
 
 == Preparations
 
-include::../../../recipe-template/src/asciidoc/051_get-the-code.adoc[]
-include::../../../recipe-template/src/asciidoc/052_create-recipe-runtime.adoc[]
-include::../../../recipe-template/src/asciidoc/053_create-eclipse-project-metadata.adoc[]
-include::../../../recipe-template/src/asciidoc/054_prepare-virgo-tooling.adoc[]
-include::../../../recipe-template/src/asciidoc/055_import-the-code.adoc[]
-include::../../../recipe-template/src/asciidoc/056_create-new-virgo-server.adoc[]
+include::../../../../recipe-template/src/docs/asciidoc/051_get-the-code.adoc[]
+include::../../../../recipe-template/src/docs/asciidoc/052_create-recipe-runtime.adoc[]
+include::../../../../recipe-template/src/docs/asciidoc/053_create-eclipse-project-metadata.adoc[]
+include::../../../../recipe-template/src/docs/asciidoc/054_prepare-virgo-tooling.adoc[]
+include::../../../../recipe-template/src/docs/asciidoc/055_import-the-code.adoc[]
+include::../../../../recipe-template/src/docs/asciidoc/056_create-new-virgo-server.adoc[]
 
 == Directions
 
@@ -37,7 +37,7 @@ This is mostly about specifying necessary `Import-Package` and the `Web-ContextP
 .template.mf
 [source,txt]
 ----
-include::../../org.eclipse.virgo.samples.recipe.uploading/template.mf[]
+include::../../../org.eclipse.virgo.samples.recipe.uploading/template.mf[]
 ----
 
 You can mix and match the Virgo specific header `Import-Bundle` and OSGi standard header `Import-Package` within the `MANIFEST.MF`.
@@ -50,7 +50,7 @@ Next step is to confiugre the servlet container via `WEB-INF/web.xml`:
 [source,xml]
 .web.xml
 ----
-include::../../org.eclipse.virgo.samples.recipe.uploading/src/main/resources/WEB-INF/web.xml[]
+include::../../../org.eclipse.virgo.samples.recipe.uploading/src/main/resources/WEB-INF/web.xml[]
 ----
 <1> Virgo specific `contextClass`
 
@@ -60,7 +60,7 @@ Finally the Spring web application context. Nothing Virgo specific here:
 
 [source,xml]
 ----
-include::../../org.eclipse.virgo.samples.recipe.uploading/src/main/resources/WEB-INF/spring/appServlet/servlet-context.xml[]
+include::../../../org.eclipse.virgo.samples.recipe.uploading/src/main/resources/WEB-INF/spring/appServlet/servlet-context.xml[]
 ----
 
 == Let's taste
@@ -69,7 +69,7 @@ For easy client-side consumption of the file upload you can use the `FileUploade
 
 [source,java]
 ----
-include::../../org.eclipse.virgo.samples.recipe.uploading/src/main/java/org/eclipse/virgo/samples/recipe/uploading/internal/FileUploader.java[tags=type]
+include::../../../org.eclipse.virgo.samples.recipe.uploading/src/main/java/org/eclipse/virgo/samples/recipe/uploading/internal/FileUploader.java[tags=type]
 ----
 
 NOTE: Please see the original guide https://spring.io/guides/gs/{guide-short-name}/["{recipe-name}"] for more background information about this client.
@@ -94,4 +94,4 @@ Either way you should see the following output independent of your choice:
 You successfully uploaded sample.txt into sample.txt-uploaded !
 ....
 
-include::../../../recipe-template/src/asciidoc/08_dockerize_recipe.adoc[]
+include::../../../../recipe-template/src/docs/asciidoc/08_dockerize_recipe.adoc[]
