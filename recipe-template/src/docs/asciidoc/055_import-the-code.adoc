@@ -2,7 +2,7 @@
 === Import the code into your Eclipse IDE
 
 Now you can menu:Import[Gradle > Gradle Project] into your IDE.
-The project folder is  called `{recipe-short-name}` and lies directly in the "Sample Applications" folder you created previously with the Git clone command. (`org.eclipse.virgo.samples`).
+The project folder is  called {recipe-short-name} and lies directly in the "Sample Applications" folder you created previously with the Git clone command. (`org.eclipse.virgo.samples`).
 
 [NOTE]
 --

@@ -2,6 +2,7 @@
 :guide-short-name: custom-runtime
 :recipe-name: Create a Custom Virgo Runtime with Dockerizor
 :recipe-short-name: recipe-{guide-short-name}
+:experimental: true
 
 include::../../../../recipe-template/src/docs/asciidoc/00_title.adoc[]
 
@@ -23,11 +24,9 @@ This recipe shows how to create your own custom https://eclipse.org/virgo/[Virgo
 == Preparations
 
 include::../../../../recipe-template/src/docs/asciidoc/051_get-the-code.adoc[]
-include::../../../../recipe-template/src/docs/asciidoc/052_create-recipe-runtime.adoc[]
 include::../../../../recipe-template/src/docs/asciidoc/053_create-eclipse-project-metadata.adoc[]
 include::../../../../recipe-template/src/docs/asciidoc/054_prepare-virgo-tooling.adoc[]
 include::../../../../recipe-template/src/docs/asciidoc/055_import-the-code.adoc[]
-include::../../../../recipe-template/src/docs/asciidoc/056_create-new-virgo-server.adoc[]
 
 == A closer look
 
