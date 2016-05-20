@@ -1,0 +1,20 @@
+dockerizor {
+	repository = 'virgo-recipe/recipe-accessing-data-mongodb'
+    description = 'Virgo Recipe MongoDB created with Gradle Plugin: com.eclipsesource.dockerizor'
+
+	pickupFiles = ['recipe-accessing-data-mongodb.plan']
+
+	virgoHome = '/home/virgo/virgo-recipe-accessing-data-mongodb'
+}
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	repositoryUsr group: "org.mongodb", name: "mongo-java-driver", version: mongoJavaDriverVersion
+	repositoryUsr group: "org.springframework.data", name: "spring-data-commons", version: springDataCommonsVersion
+	repositoryUsr group: "org.springframework.data", name: "spring-data-mongodb", version: springDataMongodbVersion
+
+	repositoryUsr project(':org.eclipse.virgo.samples.recipe.data.mongodb')
+}

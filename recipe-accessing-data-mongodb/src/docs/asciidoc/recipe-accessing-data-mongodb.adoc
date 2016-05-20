@@ -1,0 +1,172 @@
+:virgo-homepage: https://eclipse.org/virgo
+:guide-short-name: accessing-data-mongodb
+:recipe-name: Accessing Data with MongoDB
+:recipe-short-name: recipe-{guide-short-name}
+:experimental: true
+
+include::../../../../recipe-template/src/docs/asciidoc/00_title.adoc[]
+include::../../../../recipe-template/src/docs/asciidoc/01_acknowledgements.adoc[]
+
+== {recipe-name}
+
+The original guide uses https://projects.spring.io/spring-boot/[Spring Boot] to bootstrap the demo application. This guide shows what needs to be done to run {recipe-name} with Virgo.
+
+include::../../../../recipe-template/src/docs/asciidoc/03_shopping-list.adoc[]
+
+include::../../../../recipe-template/src/docs/asciidoc/04_ingredients.adoc[]
+* OSGi Metadata
+* Spring configuration
+
+== Preparations
+
+include::../../../../recipe-template/src/docs/asciidoc/051_get-the-code.adoc[]
+include::../../../../recipe-template/src/docs/asciidoc/052_create-recipe-runtime.adoc[]
+include::../../../../recipe-template/src/docs/asciidoc/053_create-eclipse-project-metadata.adoc[]
+include::../../../../recipe-template/src/docs/asciidoc/054_prepare-virgo-tooling.adoc[]
+include::../../../../recipe-template/src/docs/asciidoc/055_import-the-code.adoc[]
+include::../../../../recipe-template/src/docs/asciidoc/056_create-new-virgo-server.adoc[]
+
+== Directions
+
+In the original guide the music plays in the run method of the `CommandLineRunner` of the Spring Boot application.
+We are going to transform the `@SpringBootApplication` into a plain `@Component` with an `init`-method.
+
+=== Spring Boot Application
+
+[source,java]
+----
+@SpringBootApplication // <1>
+public class Application implements CommandLineRunner { // <2>
+
+  @Autowired private CustomerRepository repository; // <3>
+
+  public static void main(String[] args) {
+    SpringApplication.run(Application.class, args);
+  }
+
+  public void run(String... args) throws Exception { // <4>
+    // repository actions...
+  }
+}
+----
+<1> Will be replaced with a plain `@Component`.
+<2> `CommandLineRunner` will be replaced, too.
+<3> `@Autowired` is the common denominator.
+<4> Will be replaced with a `@PostConstruct` method.
+
+=== Virgoized Application
+
+After the transformation the component looks something like:
+
+[source,java]
+----
+@Component
+public class Application {
+
+  @Autowired private CustomerRepository repository;
+
+  @PostConstruct
+  public void init() throws Exception {
+    // repository actions...
+  }
+}
+----
+
+=== Customer
+
+Both: The `Customer`
+
+[source,java]
+.Customer
+----
+include::../../../org.eclipse.virgo.samples.recipe.data.mongodb/src/main/java/org/eclipse/virgo/samples/recipe/data/mongodb/Customer.java[tags=type]
+----
+
+=== Customer Repository
+
+and `CustomerRepository` are unchanged:
+
+[source,java]
+.CustomerRepository
+----
+include::../../../org.eclipse.virgo.samples.recipe.data.mongodb/src/main/java/org/eclipse/virgo/samples/recipe/data/mongodb/CustomerRepository.java[tags=type]
+----
+
+=== OSGi Metadata
+
+The OSGi metadata is generated from a template:
+
+[source,java]
+.template.mf
+----
+include::../../../org.eclipse.virgo.samples.recipe.data.mongodb/template.mf[]
+----
+
+=== Dependency management
+
+While the original guide pulls in it's Spring Data dependencies the Spring Boot way:
+
+[source,groovy]
+----
+dependencies {
+    compile("org.springframework.boot:spring-boot-starter-data-mongodb")
+...
+}
+----
+
+we create a custom Virgo runtime and add list the required dependencies more explicit:
+
+[source,groovy]
+----
+include::../../../recipe-accessing-data-mongodb-runtime/build.gradle[tags=dependencies]
+----
+
+=== Spring Boot Demystified
+
+Within the Virgo powered OSGi environment some of the Spring Boot magic becomes visible in `XML`.
+
+
+[source,xml,indent=0]
+----
+include::../../../org.eclipse.virgo.samples.recipe.data.mongodb/src/main/resources/META-INF/spring/applicationContext.xml[tags=configuration]
+----
+<1> Provides a bean `MongoDbFactory`
+<2> Configures and provides a bean `MongoTemplate`
+<3> Scans provide MongoDB backed `MongoRepository`
+<4> Scans the application code for `@Component` s ...
+
+== Let's taste
+
+When the oven is hot - the Virgo Runtime is up and running - you can insert (drag'n'drop) the fresh OSGi bundle.
+
+A quick glimpse into the oven...
+
+[source,sh]
+----
+$ tail -500f ${VIRGO_HOME}/serviceability/logs/log.log
+----
+
+=== the results
+
+Should show the tasty result of our actions:
+
+[source,sh]
+.log.log
+----
+...
+System.out Customers found with findAll():
+System.out -------------------------------
+System.out Customer[id=570fa0b3eec8cfd2c9a99d98, firstName='Alice', lastName='Smith']
+System.out Customer[id=570fa0b3eec8cfd2c9a99d99, firstName='Bob', lastName='Smith']
+System.out
+System.out Customer found with findByFirstName('Alice'):
+System.out --------------------------------
+System.out Customer[id=570fa0b3eec8cfd2c9a99d98, firstName='Alice', lastName='Smith']
+System.out Customers found with findByLastName('Smith'):
+System.out --------------------------------
+System.out Customer[id=570fa0b3eec8cfd2c9a99d98, firstName='Alice', lastName='Smith']
+System.out Customer[id=570fa0b3eec8cfd2c9a99d99, firstName='Bob', lastName='Smith']
+...
+----
+
+include::../../../../recipe-template/src/docs/asciidoc/08_dockerize_recipe.adoc[]
