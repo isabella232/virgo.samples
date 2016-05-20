@@ -1,0 +1,31 @@
+// add the build task 'clean'
+apply plugin: 'base'
+
+// add the build task 'dockerize'
+apply plugin: "com.eclipsesource.dockerizor"
+
+dockerize.dependsOn ':org.eclipse.virgo.samples.recipe.web:build'
+
+dockerizor {
+	repository = 'virgo-recipe/web'
+    description = 'Virgo Recipe Serving Web Content created with Gradle Plugin: com.eclipsesource.dockerizor'
+
+	pickupFiles = ['recipe-serving-web-content.plan']
+
+	virgoHome = '/home/virgo/virgo-recipe-serving-web-content'
+}
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+    repositoryExt group: "org.thymeleaf", name: "thymeleaf", version: thymeleafVersion
+    repositoryExt group: "org.thymeleaf", name: "thymeleaf-spring4", version: thymeleafVersion
+
+    repositoryExt group: "org.javassist", name: "javassist", version: javassistVersion
+    repositoryExt group: "org.eclipse.virgo.mirrored", name: "ognl", version: ognlVersion
+	repositoryExt group: "org.unbescape", name: "unbescape", version: unbescapeVersion
+
+	repositoryUsr project(':org.eclipse.virgo.samples.recipe.web')
+}

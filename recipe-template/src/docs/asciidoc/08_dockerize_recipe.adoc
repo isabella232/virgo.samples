@@ -1,7 +1,8 @@
 
 == Dockerise the Application ==
 
-We use Gradle and Dockerizor to build the application: Instead of running the sample within the Eclipse IDE you can build a https://www.docker.com/[Docker] image:
+We use Gradle and Dockerizor to build the application.
+Instead of running the sample within the Eclipse IDE you can build a https://www.docker.com/[Docker] image:
 
 [source,sh]
 ----

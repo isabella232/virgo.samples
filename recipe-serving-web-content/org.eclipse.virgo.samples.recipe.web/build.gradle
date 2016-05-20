@@ -1,0 +1,11 @@
+dependencies {
+    ecj group: "org.eclipse.jdt.core.compiler", name: "ecj", version: "4.4.2"
+
+	compile group: "org.eclipse.virgo.mirrored", name: "org.springframework.core", version: springframeworkVersion
+	compile group: "org.eclipse.virgo.mirrored", name: "org.springframework.context", version: springframeworkVersion
+	compile group: "org.eclipse.virgo.mirrored", name: "org.springframework.beans", version: springframeworkVersion
+	compile group: "org.eclipse.virgo.mirrored", name: "org.springframework.web", version: springframeworkVersion
+
+	compile group: "org.thymeleaf", name: "thymeleaf", version: thymeleafVersion
+	compile group: "org.thymeleaf", name: "thymeleaf-spring4", version: thymeleafVersion
+}

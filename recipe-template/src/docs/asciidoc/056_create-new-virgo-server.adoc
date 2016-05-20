@@ -1,4 +1,5 @@
 
 === Create new Virgo Server Runtime
 
-"Define a new server" within the IDE +New -> Server -> EclipseRT -> Virgo Runtime+ and choose the directory of the previously installed Virgo server `VIRGO_HOME`.
+Define a new server::
+  Within the IDE menu:New[Server > EclipseRT > Virgo Runtime] and choose the directory of the previously installed Virgo server `VIRGO_HOME`.

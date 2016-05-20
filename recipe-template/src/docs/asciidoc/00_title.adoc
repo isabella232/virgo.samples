@@ -1,3 +1,3 @@
-= Virgo recipe for "{recipe-name}"
+== Virgo recipe "{recipe-name}"
 
 image:{virgo-homepage}/images/virgo-logo.png["Virgo Homepage"]

@@ -5,8 +5,8 @@ Download https://eclipse.org/downloads/[Eclipse IDE for Java EE Developers] e.g.
 
 Start your Eclipse IDE and add the http://wiki.eclipse.org/Virgo/Tooling[Virgo Tooling] to your Eclipse IDE.
 
-NOTE: For the impatient: This is the http://download.eclipse.org/virgo/release/tooling/[Virgo Tooling update site] URL: http://download.eclipse.org/virgo/release/tooling. 
+NOTE: http://download.eclipse.org/virgo/release/tooling/[Virgo Tooling update site]: http://download.eclipse.org/virgo/release/tooling/
 
 Optionally add the https://wiki.eclipse.org/Linux_Tools_Project/Docker_Tooling[Docker Tooling] to your Eclipse IDE.
 
-NOTE: For the impatient: This is the http://download.eclipse.org/linuxtools/updates-docker-nightly/[Docker Tooling update site] URL: http://download.eclipse.org/linuxtools/updates-docker-nightly/.
+NOTE: http://download.eclipse.org/linuxtools/updates-docker-nightly/[Docker Tooling update site]: http://download.eclipse.org/linuxtools/updates-docker-nightly/

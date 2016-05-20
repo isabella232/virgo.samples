@@ -1,0 +1,102 @@
+:virgo-homepage: https://eclipse.org/virgo
+:guide-short-name: serving-web-content
+:recipe-name: Serving Web Content with Spring MVC
+:recipe-short-name: recipe-{guide-short-name}
+:experimental: true
+
+include::../../../../recipe-template/src/docs/asciidoc/00_title.adoc[]
+include::../../../../recipe-template/src/docs/asciidoc/01_acknowledgements.adoc[]
+
+== {recipe-name}
+
+The original guide uses https://projects.spring.io/spring-boot/[Spring Boot] to bootstrap the demo application. This guide shows what needs to be done to serve web content with Virgo.
+
+include::../../../../recipe-template/src/docs/asciidoc/03_shopping-list.adoc[]
+
+include::../../../../recipe-template/src/docs/asciidoc/04_ingredients.adoc[]
+* Spring configuration
+* Web application configuration
+* OSGi manifest
+
+== Preparations
+
+include::../../../../recipe-template/src/docs/asciidoc/051_get-the-code.adoc[]
+include::../../../../recipe-template/src/docs/asciidoc/052_create-recipe-runtime.adoc[]
+include::../../../../recipe-template/src/docs/asciidoc/053_create-eclipse-project-metadata.adoc[]
+include::../../../../recipe-template/src/docs/asciidoc/054_prepare-virgo-tooling.adoc[]
+include::../../../../recipe-template/src/docs/asciidoc/055_import-the-code.adoc[]
+include::../../../../recipe-template/src/docs/asciidoc/056_create-new-virgo-server.adoc[]
+
+== Directions
+
+Virgo has no support for Spring's `@EnableAutoConfiguration`, so you have to be more explicit than in the Spring Boot version of this guide - after all, Virgo is an OSGi runtime and every bundle needs to declare its needs in the `META-INF/MANIFEST.MF`.
+
+Basically, you have to specify necessary dependencies (via `Import-Package` or `Import-Bundle` headers) and the `Web-ContextPath` the REST service application wants to be published on.
+
+=== The Manifest template
+
+.template.mf
+[source,txt]
+----
+include::../../../org.eclipse.virgo.samples.recipe.web/template.mf[]
+----
+
+You can mix and match the Virgo specific header `Import-Bundle` and OSGi standard header `Import-Package`.
+
+=== Compatibility
+
+In the sample the fine-tuning of the `MANIFEST.MF` is done within the `template.mf`.
+
+[NOTE]
+--
+If you intend to run your bundles in different OSGi containers you have to limit yourself to the OSGi standard headers.
+--
+
+=== The web.xml configuration
+
+Next step is to configure the servlet container via
+
+.WEB-INF/web.xml
+[source,xml]
+----
+include::../../../org.eclipse.virgo.samples.recipe.web/src/main/resources/WEB-INF/web.xml[]
+----
+
+=== closer look at web.xml
+
+[CAUTION]
+--
+The most important parameter is the `contextClass`
+--
+
+It's *not* the default from the Spring Framework, but Virgo's `ServerOsgiBundleXmlWebApplicationContext`.
+
+[source,xml]
+----
+<context-param>
+    <param-name>contextClass</param-name>
+    <param-value>org.eclipse.virgo.web.dm.ServerOsgiBundleXmlWebApplicationContext</param-value>
+</context-param>
+----
+
+== Let's taste
+
+Start the Virgo server inside the Springsource Tool Suite to appreciate what you build.
+With `curl` and the command line simply run the following command within the project's directory:
+
+[source,sh]
+----
+$ curl -i 'http://localhost:8080/thymeleaf/?name=Virgo'
+----
+
+You should see an output like:
+
+....
+<body>
+    <p>Hello, Virgo!</p>
+</body>
+....
+
+or point your favorite browser to http://localhost:8080/thymeleaf/
+
+include::../../../../recipe-template/src/docs/asciidoc/08_dockerize_recipe.adoc[]

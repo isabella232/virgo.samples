@@ -5,4 +5,7 @@
 * https://wiki.eclipse.org/Virgo/Source#Virgo_git_Repositories[Sample Git repository]
 * https://eclipse.org/downloads/[Eclipse IDE]
 
-NOTE: Only Virgo Server for Apache Tomcat and Virgo Jetty Server are supported by the Virgo Tooling.
+[NOTE]
+--
+Only Virgo Server for Apache Tomcat and Virgo Jetty Server are supported by the Virgo Tooling.
+--
