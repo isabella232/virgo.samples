@@ -1,0 +1,3 @@
+dependencies {
+	sourceBundle 'org.springframework.amqp:spring-amqp:1.5.1.RELEASE'
+}

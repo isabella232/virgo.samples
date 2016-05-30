@@ -1,0 +1,207 @@
+:virgo-homepage: https://eclipse.org/virgo
+:guide-short-name: messaging-rabbitmq
+:recipe-name: Messaging with RabbitMQ
+:recipe-short-name: recipe-{guide-short-name}
+:experimental: true
+
+include::../../../../recipe-template/src/docs/asciidoc/00_title.adoc[]
+include::../../../../recipe-template/src/docs/asciidoc/01_acknowledgements.adoc[]
+
+== {recipe-name}
+
+The original guide uses https://projects.spring.io/spring-boot/[Spring Boot] to bootstrap the demo application. This guide shows what needs to be done to run {recipe-name} with Virgo.
+
+include::../../../../recipe-template/src/docs/asciidoc/03_shopping-list.adoc[]
+
+include::../../../../recipe-template/src/docs/asciidoc/04_ingredients.adoc[]
+* OSGi Metadata
+* Spring configuration
+
+== Preparations
+
+include::../../../../recipe-template/src/docs/asciidoc/051_get-the-code.adoc[]
+include::../../../../recipe-template/src/docs/asciidoc/052_create-recipe-runtime.adoc[]
+include::../../../../recipe-template/src/docs/asciidoc/053_create-eclipse-project-metadata.adoc[]
+include::../../../../recipe-template/src/docs/asciidoc/054_prepare-virgo-tooling.adoc[]
+include::../../../../recipe-template/src/docs/asciidoc/055_import-the-code.adoc[]
+include::../../../../recipe-template/src/docs/asciidoc/056_create-new-virgo-server.adoc[]
+
+== Directions
+
+[NOTE]
+--
+In the original guide the music plays in the run method of the `CommandLineRunner` of the Spring Boot application.
+--
+
+`*@Configuration*` => `*<XML/>*`
+
+////
+The configuration hosted inside the `Application`, too has to be converted into `<XML/>`.
+////
+
+We are going to transform the `@SpringBootApplication` into a plain `@Component` with an `init`-method.
+
+
+=== Spring Boot Application
+
+[source,java]
+----
+@SpringBootApplication // <1>
+public class Application implements CommandLineRunner { // <2>
+
+  @Autowired private CustomerRepository repository; // <3>
+
+  public static void main(String[] args) {
+    SpringApplication.run(Application.class, args);
+  }
+
+  public void run(String... args) throws Exception { // <4>
+    // messaging actions...
+  }
+}
+----
+<1> Will be replaced with a plain `@Component`.
+<2> `CommandLineRunner` will be replaced, too.
+<3> `@Autowired` is the common denominator.
+<4> Will be replaced with a `@PostConstruct` method.
+
+=== Virgoized Application
+
+After the transformation the component looks something like:
+
+[source,java]
+----
+@Component
+public class Application {
+
+  @Autowired private CustomerRepository repository;
+
+  @PostConstruct
+  public void init() throws Exception {
+    // messaging actions...
+  }
+}
+----
+
+=== Message Receiver
+
+The `Receiver` is unchanged:
+
+[source,java]
+----
+include::../../../org.eclipse.virgo.samples.recipe.messaging.rabbitmq/src/main/java/org/eclipse/virgo/samples/recipe/messaging/rabbitmq/Receiver.java[tags=type]
+----
+
+=== RabbitMQ Queue
+
+[source,java]
+----
+@Bean
+Queue queue() {
+  return new Queue("spring-boot", false);
+}
+----
+
+vs.
+
+[source,xml,ident=0]
+----
+include::../../../org.eclipse.virgo.samples.recipe.messaging.rabbitmq/src/main/resources/META-INF/spring/applicationContext.xml[tags=queue]
+----
+
+=== RabbitMQ Exchange
+
+[source,java]
+----
+@Bean
+TopicExchange exchange() {
+  return new TopicExchange("spring-boot-exchange");
+}
+----
+
+vs.
+
+[source,xml,ident=0]
+----
+include::../../../org.eclipse.virgo.samples.recipe.messaging.rabbitmq/src/main/resources/META-INF/spring/applicationContext.xml[tags=exchange]
+----
+
+=== Binding
+
+[source,java]
+----
+@Bean
+Binding binding(Queue queue, TopicExchange exchange) {
+  return BindingBuilder.bind(queue).to(exchange).with(queueName);
+}
+----
+
+vs.
+
+[source,xml,ident=0]
+----
+include::../../../org.eclipse.virgo.samples.recipe.messaging.rabbitmq/src/main/resources/META-INF/spring/applicationContext.xml[tags=binding]
+----
+
+=== Connection Factory and Rabbit Template
+
+[TIP]
+--
+Spring Boot automatically creates a `*ConnectionFactory*` and `*RabbitTemplate*`.
+--
+
+[source,xml,ident=0]
+----
+include::../../../org.eclipse.virgo.samples.recipe.messaging.rabbitmq/src/main/resources/META-INF/spring/applicationContext.xml[tags=connection_factory]
+----
+
+[source,xml,ident=0]
+----
+include::../../../org.eclipse.virgo.samples.recipe.messaging.rabbitmq/src/main/resources/META-INF/spring/applicationContext.xml[tags=rabbit_template]
+----
+
+=== Message Listener
+
+[source,java]
+----
+@Bean
+SimpleMessageListenerContainer container(ConnectionFactory connectionFactory, MessageListenerAdapter listenerAdapter) {
+  SimpleMessageListenerContainer container = new SimpleMessageListenerContainer();
+  container.setConnectionFactory(connectionFactory);
+  container.setQueueNames(queueName);
+  container.setMessageListener(listenerAdapter);
+  return container;
+}
+----
+
+vs.
+
+[source,xml,ident=0]
+----
+include::../../../org.eclipse.virgo.samples.recipe.messaging.rabbitmq/src/main/resources/META-INF/spring/applicationContext.xml[tags=message_listener_container]
+----
+
+=== OSGi Metadata
+
+The OSGi metadata is generated from a template:
+
+[source,java]
+.template.mf
+----
+include::../../../org.eclipse.virgo.samples.recipe.messaging.rabbitmq/template.mf[]
+----
+
+== Let's taste
+
+[source,txt]
+.log.log
+----
+System.out                           Waiting five seconds...
+System.out                           Sending message...
+...
+o.s.a.r.c.CachingConnectionFactory   Created new connection: SimpleConnection@63fa2ace [delegate=amqp://guest@192.168.64.3:5672/]
+...
+System.out                           Received <Hello from RabbitMQ!>
+----
+
+include::../../../../recipe-template/src/docs/asciidoc/08_dockerize_recipe.adoc[]

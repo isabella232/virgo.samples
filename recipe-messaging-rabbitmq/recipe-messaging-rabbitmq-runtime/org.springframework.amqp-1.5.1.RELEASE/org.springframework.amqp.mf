@@ -1,0 +1,15 @@
+Bundle-SymbolicName: org.springframework.amqp
+Bundle-Name: Spring AMQP Core
+Bundle-Vendor: Eclipse Virgo
+Bundle-Version: ${version}
+Bundle-ManifestVersion: 2
+Import-Template:
+ org.springframework.*;version="[4.2.1, 5)",
+ org.codehaus.jackson.*;version="[1.9.13, 2)";resolution:="optional",
+ com.fasterxml.jackson.*;version="[2.3.2, 3)";resolution:="optional",
+ org.apache.commons.logging.*;version="[1.1.1, 2)",
+ org.aopalliance.*;version="[1, 2)",
+ org.w3c.dom.*;version="0",
+ javax.xml.*;version="0"
+Export-Template: 
+ org.springframework.amqp.*;version="${version}"

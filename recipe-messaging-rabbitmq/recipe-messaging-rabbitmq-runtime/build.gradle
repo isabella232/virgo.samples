@@ -1,0 +1,153 @@
+import groovy.jmx.builder.JmxBuilder
+
+import java.util.HashMap;
+import java.util.Map;
+import java.nio.file.Files
+import java.nio.file.Paths
+
+import javax.management.MBeanServerConnection
+import javax.management.MalformedObjectNameException;
+import javax.management.ObjectName
+import javax.management.openmbean.CompositeDataSupport;
+import javax.management.openmbean.TabularData
+import javax.management.remote.JMXConnector;
+
+// add the build task 'clean'
+apply plugin: 'base'
+
+// add the build task 'dockerize'
+apply plugin: "com.eclipsesource.dockerizor"
+
+private static String getDeploymentIdentity(Object deploymentIdentity) {
+	StringBuilder builder = new StringBuilder();
+	if (deploymentIdentity instanceof CompositeDataSupport) {
+		CompositeDataSupport deploymentIdentityInstance = (CompositeDataSupport) deploymentIdentity;
+		Object[] all = deploymentIdentityInstance.getAll(["type", "symbolicName", "version"] as String[]);
+		builder.append(all[0]);
+		builder.append(" - ").append(all[1]);
+		builder.append(": ").append(all[2]);
+	}
+	return builder.toString();
+}
+
+dockerizor {
+	repository = 'virgo-recipe/messaging-rabbitmq-runtime'
+	maintainer = 'Florian Waibel <fwaibel@eclipsesource.com>'
+	description = 'Virgo Recipe Messaging with RabbitMQ (runtime-only) created with Gradle Plugin: com.eclipsesource.dockerizor'
+
+	virgoHome = '/home/virgo/virgo-recipe-messaging-rabbitmq-runtime'
+}
+
+dependencies {
+    repositoryUsr files("org.springframework.amqp-${springAmqpVersion}/build/org.springframework.amqp-${springAmqpVersion}.jar")
+    repositoryUsr files("org.springframework.amqp.rabbitmq-${springAmqpRabbitMqVersion}/build/org.springframework.amqp.rabbitmq-${springAmqpRabbitMqVersion}.jar")
+    repositoryUsr files("com.rabbitmq.amqp.client-${rabbitmqAmqpClientVersion}/build/com.rabbitmq.amqp.client-${rabbitmqAmqpClientVersion}.jar")
+    repositoryUsr files("com.rabbitmq.http.client-${rabbitmqHttpClientVersion}/build/com.rabbitmq.http.client-${rabbitmqHttpClientVersion}.jar")
+    repositoryUsr files("org.springframework.retry-${springRetryVersion}/build/org.springframework.retry-${springRetryVersion}.jar")
+}
+
+task unzipRuntime(type: Copy, dependsOn: dockerize) {
+    doLast() {
+        def tarFile = new groovy.util.FileNameByRegexFinder().getFileNames("${->project.buildDir.absolutePath}", /.*\.tar/).get(0)
+        def outputDir = file("${buildDir}")
+
+        from tarTree(tarFile)
+        into outputDir
+    }
+}
+
+task startVirgoRuntime(type:Exec, dependsOn: unzipRuntime) {
+    workingDir "${buildDir}/virgo"
+
+    //on Uni*
+    commandLine './bin/startup.sh'
+
+    //store the output instead of printing to the console:
+    standardOutput = new ByteArrayOutputStream()
+
+    //extension method stopTomcat.output() can be used to obtain the output:
+    ext.output = {
+      return standardOutput.toString()
+    }
+}
+
+repositories {
+	mavenCentral()
+}
+
+// OSGi-ify 3rd party dependencies
+
+subprojects {
+	apply plugin: 'base'
+
+	repositories {
+	    mavenCentral()
+	    maven { url "http://build.eclipse.org/rt/virgo/maven/bundles/release" }
+	    maven { url "http://repository.springsource.com/maven/bundles/external" }
+	}
+
+	configurations {
+	    bundlorRuntime
+	
+	    sourceBundle
+	}
+	
+	dependencies {
+	    bundlorRuntime('org.eclipse.virgo.bundlor:org.eclipse.virgo.bundlor.commandline:1.1.2.RELEASE')
+	    bundlorRuntime('org.eclipse.virgo.bundlor:org.eclipse.virgo.bundlor:1.1.2.RELEASE')
+	    bundlorRuntime('org.eclipse.virgo.bundlor:org.eclipse.virgo.bundlor.blint:1.1.2.RELEASE')
+	}
+	
+	def artifactName = project.name.split('-')[0]
+	def artifactVersion = project.name.split('-')[1]
+
+	task createBuildDir() {
+	    doLast() {
+	        file(project.buildDir).mkdir()
+	    }
+	}
+
+	def outputFile = new File(file(project.buildDir), "${project.name}.jar")
+
+	task bundlor(type: JavaExec, dependsOn: createBuildDir) {
+	
+	    classpath = configurations.bundlorRuntime
+	
+	    main = 'org.eclipse.virgo.bundlor.commandline.Bundlor'
+	    args '-D', "version=${artifactVersion}"
+	    args '-i', "${->configurations.sourceBundle[0]}" // lazy GString to resolve the configuration at runtime
+	    args '-m', "${artifactName}.mf"
+	    args '-o', outputFile
+
+	    doFirst() {
+	    	println "Processing ${->configurations.sourceBundle[0]} with ${artifactName}.mf"
+	    }
+
+		doLast() {
+
+		}
+	}
+
+	task('deploy', dependsOn: bundlor) << {
+
+		def virgoHome = project.parent.buildDir.absolutePath + "/virgo"
+		print "Using VIRGO_HOME=" + virgoHome
+		System.getProperties().put("javax.net.ssl.trustStore", virgoHome + "/configuration/keystore")
+		def client = new JmxBuilder().connectorClient(port: 9875, properties:[])
+		print "connecting to JMX server..."
+		client.connect([ 'jmx.remote.credentials' :  ['admin', 'admin' ] as String[] ])
+		println "established."
+		MBeanServerConnection server = client.getMBeanServerConnection()
+		ObjectName deployer = new ObjectName("org.eclipse.virgo.kernel:category=Control,type=Deployer");
+		try {
+			Object deploymentResult = server.invoke(deployer, "deploy", [outputFile.toURI().toString() ] as Object[],
+			[String.class.getName() ] as String[])
+			println "Successfully deployed: " + getDeploymentIdentity(deploymentResult)
+		} catch (Exception e) {
+			e.printStackTrace()
+			println "Deployment failed."
+		}
+	}
+
+	dockerize.dependsOn bundlor
+}

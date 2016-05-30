@@ -1,0 +1,19 @@
+dockerizor {
+	repository = 'virgo-recipe/messaging-rabbitmq-app'
+	maintainer = 'Florian Waibel <fwaibel@eclipsesource.com>'
+	description = 'Virgo Recipe Messaging with RabbitMQ created with Gradle Plugin: com.eclipsesource.dockerizor'
+
+	pickupFiles = ['recipe-messaging-rabbitmq.plan']
+
+	virgoHome = '/home/virgo/virgo-recipe-messaging-rabbitmq'
+}
+
+dependencies {
+    repositoryUsr files("../recipe-messaging-rabbitmq-runtime/org.springframework.amqp-${springAmqpVersion}/build/org.springframework.amqp-${springAmqpVersion}.jar")
+    repositoryUsr files("../recipe-messaging-rabbitmq-runtime/org.springframework.amqp.rabbitmq-${springAmqpRabbitMqVersion}/build/org.springframework.amqp.rabbitmq-${springAmqpRabbitMqVersion}.jar")
+    repositoryUsr files("../recipe-messaging-rabbitmq-runtime/com.rabbitmq.amqp.client-${rabbitmqAmqpClientVersion}/build/com.rabbitmq.amqp.client-${rabbitmqAmqpClientVersion}.jar")
+    repositoryUsr files("../recipe-messaging-rabbitmq-runtime/com.rabbitmq.http.client-${rabbitmqHttpClientVersion}/build/com.rabbitmq.http.client-${rabbitmqHttpClientVersion}.jar")
+    repositoryUsr files("../recipe-messaging-rabbitmq-runtime/org.springframework.retry-${springRetryVersion}/build/org.springframework.retry-${springRetryVersion}.jar")
+
+	repositoryUsr project(':org.eclipse.virgo.samples.recipe.messaging.rabbitmq')
+}

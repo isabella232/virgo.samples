@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:util="http://www.springframework.org/schema/util"
+    xmlns:rabbit="http://www.springframework.org/schema/rabbit"
+    xmlns="http://www.springframework.org/schema/beans"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd
+        http://www.springframework.org/schema/rabbit http://www.springframework.org/schema/rabbit/spring-rabbit.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+<!-- tag::queue[] -->
+<bean id="queue" class="org.springframework.amqp.core.Queue">
+  <constructor-arg name="name" value="spring-boot" />
+  <constructor-arg name="durable" value="false" />
+</bean>
+<!-- end::queue[] -->
+    <!--
+    <rabbit:queue name="name"/>
+     -->
+
+<!-- tag::exchange[] -->
+<bean id="exchange" class="org.springframework.amqp.core.TopicExchange">
+  <constructor-arg name="name" value="spring-boot-exchange" />
+</bean>
+<!-- end::exchange[] -->
+
+<!--
+import org.springframework.amqp.core.Binding;
+
+	@Bean
+	Binding binding(Queue queue, TopicExchange exchange) {
+		return BindingBuilder.bind(queue).to(exchange).with(queueName);
+	}
+	DestinationConfigurer.queueName, queue
+	TopicExchangeRoutingKeyConfigurer exchange
+	with(RoutingKey)
+ -->
+ <!-- enum -->
+	<util:constant id="destination-type-queue" static-field="org.springframework.amqp.core.Binding.DestinationType.QUEUE"/>
+ <!--
+ 	<bean class="org.springframework.amqp.core.Binding.DestinationType" factory-method="valueOf">
+ 	</bean>
+  -->
+ <!-- Collections.<String, Object> emptyMap() -->
+	<bean id="emptyMap" class="java.util.Collections" factory-method="emptyMap" />
+<!-- tag::binding[] -->
+<bean id="binding" class="org.springframework.amqp.core.Binding">
+  <constructor-arg name="destination" value="spring-boot" />
+  <constructor-arg name="destinationType" ref="destination-type-queue" />
+  <constructor-arg name="exchange" value="spring-boot-exchange" />
+  <constructor-arg name="routingKey" value="" />
+  <constructor-arg name="arguments" ref="emptyMap" />
+</bean>
+<!-- end::binding[] -->
+
+	<!--
+    @Bean
+    Receiver receiver() {
+        return new Receiver();
+    }
+	 -->
+	<bean id="receiver" class="org.eclipse.virgo.samples.recipe.messaging.rabbitmq.Receiver" />
+	<!--
+	<context:component-scan base-package="org.eclipse.virgo.samples.recipe.messaging.rabbitmq" />
+	 -->
+
+	<!--
+	@Bean
+	MessageListenerAdapter listenerAdapter(Receiver receiver) {
+		return new MessageListenerAdapter(receiver, "receiveMessage");
+	}
+	 -->
+	<bean id="messageListener" class="org.springframework.amqp.rabbit.listener.adapter.MessageListenerAdapter">
+		<constructor-arg name="delegate" ref="receiver" />
+		<constructor-arg name="defaultListenerMethod" value="receiveMessage" />
+	</bean>
+
+	<!--
+	@Bean
+	SimpleMessageListenerContainer container(ConnectionFactory connectionFactory, MessageListenerAdapter listenerAdapter) {
+		SimpleMessageListenerContainer container = new SimpleMessageListenerContainer();
+		container.setConnectionFactory(connectionFactory);
+		container.setQueueNames(queueName);
+		container.setMessageListener(listenerAdapter);
+		return container;
+	}
+	 -->
+
+<!-- tag::connection_factory[] -->
+<bean id="cachingConnectionFactory" class="org.springframework.amqp.rabbit.connection.CachingConnectionFactory">
+  <property name="host" value="localhost" />
+  <property name="port" value="5672" />
+</bean>
+<bean id="connectionFactory" class="org.springframework.amqp.rabbit.connection.SimpleRoutingConnectionFactory">
+  <property name="defaultTargetConnectionFactory" ref="cachingConnectionFactory" />
+</bean>
+<!-- end::connection_factory[] -->
+<!-- tag::rabbit_template[] -->
+<bean class="org.springframework.amqp.rabbit.core.RabbitTemplate">
+  <constructor-arg ref="connectionFactory" />
+</bean>
+<!-- end::rabbit_template[] -->
+	<!--
+    <rabbit:connection-factory id="connectionFactory"/>
+    <rabbit:template id="rabbitTemplate" connection-factory="connectionFactory"/>
+	 -->
+
+<!-- tag::message_listener_container[] -->
+<bean class="org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer">
+	<property name="connectionFactory" ref="connectionFactory" />
+	<property name="queueNames" value="spring-boot" />
+	<property name="messageListener" ref="messageListener" />
+</bean>
+<!-- end::message_listener_container[] -->
+
+<!--
+    <rabbit:admin connection-factory="connectionFactory"/>
+ -->
+
+	<context:component-scan base-package="org.eclipse.virgo.samples.recipe.messaging.rabbitmq" />
+</beans>

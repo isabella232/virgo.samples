@@ -1,0 +1,4 @@
+dependencies {
+	compile "org.springframework:spring-context:${springframeworkVersion}"
+	compile "org.springframework.amqp:spring-rabbit:${springAmqpRabbitMqVersion}"
+}

@@ -1,0 +1,12 @@
+Bundle-SymbolicName: org.springframework.retry
+Bundle-Name: Spring Retry
+Bundle-Vendor: Eclipse Virgo
+Bundle-Version: ${version}
+Bundle-ManifestVersion: 2
+Export-Template: 
+ org.springframework.retry.*;version="${version}"
+Import-Template: 
+ org.springframework.*;version="[4.0.4.RELEASE, 5)",
+ org.aopalliance.*;version="[1, 2)",
+ org.apache.commons.logging.*;version="[1.1.1, 2)";resolution:="optional",
+ javax.annotation;version="0"

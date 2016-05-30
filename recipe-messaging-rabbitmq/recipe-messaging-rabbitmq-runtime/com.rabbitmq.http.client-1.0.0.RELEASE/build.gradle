@@ -1,0 +1,3 @@
+dependencies {
+	sourceBundle 'com.rabbitmq:http-client:1.0.0.RELEASE'
+}

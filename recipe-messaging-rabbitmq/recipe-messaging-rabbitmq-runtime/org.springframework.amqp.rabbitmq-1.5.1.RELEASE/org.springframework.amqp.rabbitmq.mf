@@ -1,0 +1,24 @@
+Bundle-SymbolicName: org.springframework.amqp.rabbitmq
+Bundle-Name: Spring RabbitMQ Support
+Bundle-Vendor: Eclipse Virgo
+Bundle-Version: ${version}
+Bundle-ManifestVersion: 2
+Import-Template: 
+ org.springframework.retry.*;version="[1.1.2.RELEASE, 2)";resolution:="optional",
+ org.springframework.amqp.*;version="[1.5.1.RELEASE, 2)",
+ org.springframework.*;version="[4.2.1, 5)",
+ com.rabbitmq.client.*;version="[3.5.5, 4)",
+ com.rabbitmq.utility.*;version="[3.5.5, 4)",
+ com.rabbitmq.http.client.*;version="[1.0.0.RELEASE, 2)",
+ org.aopalliance.*;version="[1, 2)",
+ org.apache.commons.logging.*;version="[1.1.1, 2)",
+ ch.qos.logback.*;version="[1.1.2, 2)",
+ org.apache.log4j.*;version="[1.2.17, 2)";resolution:="optional",
+ org.junit.*;version="0";resolution:="optional",
+ org.w3c.dom.*;version="0",
+ javax.xml.*;version="0",
+ javax.net.*;version="0"
+Import-Package: 
+ org.springframework.jmx.support;version="[4.2.1, 5)"
+Export-Template: 
+ org.springframework.amqp.rabbitmq.*;version="${version}"
