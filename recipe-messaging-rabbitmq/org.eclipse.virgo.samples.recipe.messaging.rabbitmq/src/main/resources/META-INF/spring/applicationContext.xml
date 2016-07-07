@@ -10,6 +10,8 @@
         http://www.springframework.org/schema/rabbit http://www.springframework.org/schema/rabbit/spring-rabbit.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
+<context:property-placeholder location="classpath:rabbitmq.properties" />
+
 <!-- tag::queue[] -->
 <bean id="queue" class="org.springframework.amqp.core.Queue">
   <constructor-arg name="name" value="spring-boot" />
@@ -26,17 +28,6 @@
 </bean>
 <!-- end::exchange[] -->
 
-<!--
-import org.springframework.amqp.core.Binding;
-
-	@Bean
-	Binding binding(Queue queue, TopicExchange exchange) {
-		return BindingBuilder.bind(queue).to(exchange).with(queueName);
-	}
-	DestinationConfigurer.queueName, queue
-	TopicExchangeRoutingKeyConfigurer exchange
-	with(RoutingKey)
- -->
  <!-- enum -->
 	<util:constant id="destination-type-queue" static-field="org.springframework.amqp.core.Binding.DestinationType.QUEUE"/>
  <!--
@@ -55,43 +46,20 @@ import org.springframework.amqp.core.Binding;
 </bean>
 <!-- end::binding[] -->
 
-	<!--
-    @Bean
-    Receiver receiver() {
-        return new Receiver();
-    }
-	 -->
 	<bean id="receiver" class="org.eclipse.virgo.samples.recipe.messaging.rabbitmq.Receiver" />
 	<!--
 	<context:component-scan base-package="org.eclipse.virgo.samples.recipe.messaging.rabbitmq" />
 	 -->
 
-	<!--
-	@Bean
-	MessageListenerAdapter listenerAdapter(Receiver receiver) {
-		return new MessageListenerAdapter(receiver, "receiveMessage");
-	}
-	 -->
 	<bean id="messageListener" class="org.springframework.amqp.rabbit.listener.adapter.MessageListenerAdapter">
 		<constructor-arg name="delegate" ref="receiver" />
 		<constructor-arg name="defaultListenerMethod" value="receiveMessage" />
 	</bean>
 
-	<!--
-	@Bean
-	SimpleMessageListenerContainer container(ConnectionFactory connectionFactory, MessageListenerAdapter listenerAdapter) {
-		SimpleMessageListenerContainer container = new SimpleMessageListenerContainer();
-		container.setConnectionFactory(connectionFactory);
-		container.setQueueNames(queueName);
-		container.setMessageListener(listenerAdapter);
-		return container;
-	}
-	 -->
-
 <!-- tag::connection_factory[] -->
 <bean id="cachingConnectionFactory" class="org.springframework.amqp.rabbit.connection.CachingConnectionFactory">
-  <property name="host" value="localhost" />
-  <property name="port" value="5672" />
+  <property name="host" value="${rabbitmq.host:localhost}" />
+  <property name="port" value="${rabbitmq.port:5672}" />
 </bean>
 <bean id="connectionFactory" class="org.springframework.amqp.rabbit.connection.SimpleRoutingConnectionFactory">
   <property name="defaultTargetConnectionFactory" ref="cachingConnectionFactory" />

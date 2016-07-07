@@ -1,5 +1,5 @@
 dockerizor {
-	repository = 'virgo-recipe/recipe-uploading-files-runtime'
+	repository = 'virgo-recipe/uploading-files-runtime'
 	description = 'Virgo Recipe uploading files (runtime-only) created with Gradle Plugin: com.eclipsesource.dockerizor'
 }
 

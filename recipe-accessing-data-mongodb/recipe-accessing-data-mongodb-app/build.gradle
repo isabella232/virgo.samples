@@ -1,5 +1,5 @@
 dockerizor {
-	repository = 'virgo-recipe/recipe-accessing-data-mongodb'
+	repository = 'virgo-recipe/accessing-data-mongodb-app'
     description = 'Virgo Recipe MongoDB created with Gradle Plugin: com.eclipsesource.dockerizor'
 
 	pickupFiles = ['recipe-accessing-data-mongodb.plan']

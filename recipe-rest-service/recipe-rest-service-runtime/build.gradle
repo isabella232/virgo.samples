@@ -1,5 +1,5 @@
 dockerizor {
-	repository = 'virgo-recipe/recipe-rest-service-runtime'
+	repository = 'virgo-recipe/rest-service-runtime'
 	description = 'Virgo Recipe REST service (runtime-only) created with Gradle Plugin: com.eclipsesource.dockerizor'
 }
 

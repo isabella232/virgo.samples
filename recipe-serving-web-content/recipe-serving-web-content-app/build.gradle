@@ -7,7 +7,7 @@ apply plugin: "com.eclipsesource.dockerizor"
 dockerize.dependsOn ':org.eclipse.virgo.samples.recipe.web:build'
 
 dockerizor {
-	repository = 'virgo-recipe/web'
+	repository = 'virgo-recipe/serving-web-content-app'
     description = 'Virgo Recipe Serving Web Content created with Gradle Plugin: com.eclipsesource.dockerizor'
 
 	pickupFiles = ['recipe-serving-web-content.plan']

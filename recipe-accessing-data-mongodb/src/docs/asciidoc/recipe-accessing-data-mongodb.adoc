@@ -169,4 +169,4 @@ System.out Customer[id=570fa0b3eec8cfd2c9a99d99, firstName='Bob', lastName='Smit
 ...
 ----
 
-include::../../../../recipe-template/src/docs/asciidoc/08_dockerize_recipe.adoc[]
+include::08_dockerize_recipe.adoc[]

@@ -11,7 +11,7 @@ $ ./gradlew dockerize
 
 and run the application with:
 
-[source,sh]
+[source,sh,subs="attributes"]
 ----
-$ docker run
+$ docker run --rm -it --name {guide-short-name} --publish 8080:8080 virgo-recipe/{guide-short-name}-app
 ----

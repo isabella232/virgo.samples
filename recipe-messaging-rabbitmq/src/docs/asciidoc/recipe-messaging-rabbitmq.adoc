@@ -204,4 +204,4 @@ o.s.a.r.c.CachingConnectionFactory   Created new connection: SimpleConnection@63
 System.out                           Received <Hello from RabbitMQ!>
 ----
 
-include::../../../../recipe-template/src/docs/asciidoc/08_dockerize_recipe.adoc[]
+include::08_dockerize_recipe.adoc[]

@@ -8,8 +8,8 @@ buildscript {
 	}
 	dependencies {
 		classpath "gradle.plugin.org.eclipse.virgo.bundlor:bundlor-plugin:0.2"
-		classpath "gradle.plugin.com.eclipsesource.dockerizor:dockerizor:0.6"
-        classpath 'org.asciidoctor:asciidoctor-gradle-plugin:1.5.1'
+		classpath "gradle.plugin.com.eclipsesource.dockerizor:dockerizor:0.7.0"
+        classpath 'org.asciidoctor:asciidoctor-gradle-plugin:1.5.3'
 	}
 }
 
@@ -147,7 +147,7 @@ configure(dockerProjects) {
 	dockerizor {
 		maintainer = 'Florian Waibel <fwaibel@eclipsesource.com>'
 
-		javaImage = 'java:openjdk-8u72-jre' // <3>
+		javaImage = 'java:8u92-jre-alpine' // <3>
 
 		virgoVersion = 'latest'
 		hudsonJobName = 'gradle-build'

@@ -1,5 +1,5 @@
 dockerizor {
-	repository = 'virgo-recipe/recipe-uploading-files-app'
+	repository = 'virgo-recipe/uploading-files-app'
     description = 'Virgo Recipe uploading files created with Gradle Plugin: com.eclipsesource.dockerizor'
 
 	pickupFiles = ['recipe-uploading-files.plan']

@@ -8,7 +8,7 @@ buildscript {
 	}
 	dependencies {
 		classpath "gradle.plugin.org.eclipse.virgo.bundlor:bundlor-plugin:0.2"
-		classpath "gradle.plugin.com.eclipsesource.dockerizor:dockerizor:0.6"
+		classpath "gradle.plugin.com.eclipsesource.dockerizor:dockerizor:0.7.0"
         classpath 'org.asciidoctor:asciidoctor-gradle-plugin:1.5.1'
 	}
 }
@@ -19,10 +19,7 @@ ext.virgoProjects = [
 	project(':org.eclipse.virgo.samples.recipe.uploading'),
 ]
 
-ext.dockerProjects = [
-	project(':recipe-uploading-files-runtime'),
-	project(':recipe-uploading-files-app'),
-]
+ext.dockerProjects = subprojects.findAll {it.name.contains('-runtime') || it.name.contains('-app')}
 
 configure(virgoProjects + dockerProjects) {
 	repositories {
@@ -150,8 +147,6 @@ configure(dockerProjects) {
 
 	dockerizor {
 		maintainer = 'Florian Waibel <fwaibel@eclipsesource.com>'
-
-		javaImage = 'java:openjdk-8u72-jre'
 
 		virgoVersion = 'latest'
 		hudsonJobName = 'gradle-build'

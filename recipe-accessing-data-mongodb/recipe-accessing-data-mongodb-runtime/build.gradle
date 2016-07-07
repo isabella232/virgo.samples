@@ -1,5 +1,5 @@
 dockerizor {
-	repository = 'virgo-recipe/recipe-accessing-data-mongodb-runtime'
+	repository = 'virgo-recipe/accessing-data-mongodb-runtime'
     description = 'Virgo Recipe MongoDB (runtime-only) created with Gradle Plugin: com.eclipsesource.dockerizor'
 
 	virgoHome = '/home/virgo/virgo-recipe-accessing-data-mongodb-runtime'

@@ -1,0 +1,36 @@
+
+== Dockerise the Application ==
+
+We use Gradle and Dockerizor to build the application.
+Instead of running the sample within the Eclipse IDE you can build a https://www.docker.com/[Docker] image:
+
+[source,sh]
+----
+$ ./gradlew dockerize
+----
+
+[NOTE]
+----
+This recipe assumes you have a local RabbitMQ up and running.
+----
+
+Let's create an isolated network `recipe_nw` to test the complete recipe:
+
+[source,sh]
+----
+docker network create -d bridge --subnet 172.25.0.0/16 recipe_nw
+----
+
+To start a temporary MongoDB container inside this network issue the following command:
+
+[source,sh]
+----
+$ docker run --rm -it --net=recipe_nw --name mongodb mongo:2.6.12
+----
+
+then run the application with the environment variable `mongodb.host` set to the container name used in the command above:
+
+[source,sh,subs="attributes"]
+----
+$ docker run --rm -it --net=recipe_nw --publish 8080 -e mongodb.host=mongodb virgo-recipe/{guide-short-name}-app
+----

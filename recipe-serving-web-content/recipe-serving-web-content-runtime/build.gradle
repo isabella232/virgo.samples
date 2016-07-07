@@ -5,7 +5,7 @@ apply plugin: 'base'
 apply plugin: "com.eclipsesource.dockerizor"
 
 dockerizor {
-	repository = 'virgo-recipe/web-runtime'
+	repository = 'virgo-recipe/serving-web-content-runtime'
 	description = 'Virgo Recipe Serving Web Content (runtime-only) created with Gradle Plugin: com.eclipsesource.dockerizor'
 
 	virgoHome = '/home/virgo/virgo-recipe-serving-web-content-runtime'

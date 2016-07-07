@@ -1,5 +1,5 @@
 dockerizor {
-	repository = 'virgo-recipe/recipe-rest-service-app'
+	repository = 'virgo-recipe/rest-service-app'
     description = 'Virgo Recipe REST service created with Gradle Plugin: com.eclipsesource.dockerizor'
 
 	pickupFiles = ['recipe-restservice.plan']
