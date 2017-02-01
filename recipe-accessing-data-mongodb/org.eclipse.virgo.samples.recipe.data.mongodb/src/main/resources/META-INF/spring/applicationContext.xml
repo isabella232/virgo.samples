@@ -9,16 +9,14 @@
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
 		http://www.springframework.org/schema/data/mongo http://www.springframework.org/schema/data/mongo/spring-mongo.xsd" >
 
-<context:property-placeholder location="classpath:mongodb.properties" />
+	<!-- tag::configuration[] -->
+	<context:property-placeholder location="classpath:mongodb.properties" />
 
-<!-- tag::configuration[] -->
-  <mongo:db-factory dbname="recipes" host="${mongodb.host:localhost}:${mongodb.port:27017}" /><!--1-->
-  <mongo:repositories base-package="org.eclipse.virgo.samples.recipe.data.mongodb" /><!--2-->
+	<mongo:db-factory dbname="recipes" host="${mongodb.host:localhost}:${mongodb.port:27017}" /><!--1 -->
+	<mongo:template />
+	<mongo:repositories base-package="org.eclipse.virgo.samples.recipe.data.mongodb" />
 
-  <bean id="mongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate"><!--3-->
-    <constructor-arg ref="mongoDbFactory" />
-  </bean>
+	<context:component-scan base-package="org.eclipse.virgo.samples.recipe.data.mongodb" /><!--4 -->
+	<!-- end::configuration[] -->
 
-  <context:component-scan base-package="org.eclipse.virgo.samples.recipe.data.mongodb" /><!--4-->
-<!-- end::configuration[] -->
 </beans>

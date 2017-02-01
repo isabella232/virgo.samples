@@ -10,9 +10,9 @@ $ ./gradlew dockerize
 ----
 
 [NOTE]
-----
-This recipe assumes you have a local RabbitMQ up and running.
-----
+--
+This recipe assumes you have a local MongoDB up and running.
+--
 
 Let's create an isolated network `recipe_nw` to test the complete recipe:
 

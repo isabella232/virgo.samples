@@ -1,1 +1,4 @@
-include 'org.eclipse.virgo.samples.recipe.data.mongodb', 'recipe-accessing-data-mongodb-runtime', 'recipe-accessing-data-mongodb-app'
+include 'org.eclipse.virgo.samples.recipe.data.mongodb'
+
+include 'recipe-accessing-data-mongodb-runtime'
+include 'recipe-accessing-data-mongodb-app'
