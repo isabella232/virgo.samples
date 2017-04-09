@@ -7,7 +7,7 @@ buildscript {
 	}
 	dependencies {
 		classpath "gradle.plugin.org.eclipse.virgo.bundlor:bundlor-plugin:0.2"
-		classpath "gradle.plugin.com.eclipsesource.dockerizor:dockerizor:0.8.1"
+		classpath "gradle.plugin.com.eclipsesource.dockerizor:dockerizor:0.8.2"
 		classpath 'org.asciidoctor:asciidoctor-gradle-plugin:1.5.3'
 	}
 }
@@ -37,8 +37,6 @@ configure(virgoProjects) {
 	apply plugin: 'java'
 	apply plugin: 'eclipse'
 	apply plugin: 'eclipse-wtp'
-
-	version = '0.3.0.BUILD-SNAPSHOT'
 
 	repositories {
 	    mavenCentral()
@@ -147,9 +145,6 @@ configure(dockerProjects) {
 		createLocalCopy = System.properties['local.build'] == 'true'
 		removeAdminConsole = System.properties['local.build'] != 'true'
         removeSplash = System.properties['local.build'] != 'true'
-
-		virgoFlavour = 'VTS'
-		virgoVersion = '3.7.0.M04'
 	}
 
 	dockerize.dependsOn configurations.repositoryExt

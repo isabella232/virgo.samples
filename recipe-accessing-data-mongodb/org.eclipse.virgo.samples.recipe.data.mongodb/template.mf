@@ -1,4 +1,5 @@
-Bundle-Version: 0.1
+Bundle-ManifestVersion: 2
+Bundle-Version: ${version}
 Bundle-Name: Virgo Recipe MongoDB
 Bundle-SymbolicName: org.eclipse.virgo.samples.recipe.data.mongodb
 Import-Bundle: org.springframework.aop,
@@ -6,6 +7,6 @@ Import-Bundle: org.springframework.aop,
  org.springframework.data.core,
  org.springframework.data.mongodb
 Excluded-Imports: org.springframework.*
-Import-Package: com.mongodb;version="[2.13,3)",
+Import-Package: com.mongodb;version="[2.14.3,3)",
  javax.annotation;version="0",
  org.aopalliance.aop;version="1"
