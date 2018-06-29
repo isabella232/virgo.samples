@@ -34,11 +34,14 @@ dependencies {
 
 task unzipRuntime(type: Copy, dependsOn: dockerize) {
 	outputs.upToDateWhen { false } // always unzip
-	def tarFile = new groovy.util.FileNameByRegexFinder().getFileNames("${->project.buildDir.absolutePath}", /.*\.tar/).get(0)
-	def outputDir = file("${buildDir}")
+	def fileNames = new FileNameByRegexFinder().getFileNames("${-> project.buildDir.absolutePath}", /.*\.tar/)
+	if (fileNames) {
+		def tarFile = fileNames.get(0)
+		def outputDir = file("${buildDir}")
 
-	from tarTree(tarFile)
-	into outputDir
+		from tarTree(tarFile)
+		into outputDir
+	}
 }
 
 // tag::task_start_virgo_runtime[]
