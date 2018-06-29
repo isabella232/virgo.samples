@@ -34,13 +34,16 @@ dependencies {
 
 task unzipRuntime(type: Copy, dependsOn: dockerize) {
 	outputs.upToDateWhen { false } // always unzip
-	def fileNames = new FileNameByRegexFinder().getFileNames("${-> project.buildDir.absolutePath}", /.*\.tar/)
-	if (fileNames) {
-		def tarFile = fileNames.get(0)
-		def outputDir = file("${buildDir}")
+	def buildDir = project.buildDir
+	if (buildDir != null && buildDir.exists()) {
+		def fileNames = new FileNameByRegexFinder().getFileNames("${-> buildDir.absolutePath}", /.*\.tar/)
+		if (fileNames) {
+			def tarFile = fileNames.get(0)
+			def outputDir = file("${buildDir}")
 
-		from tarTree(tarFile)
-		into outputDir
+			from tarTree(tarFile)
+			into outputDir
+		}
 	}
 }
 
