@@ -8,18 +8,20 @@ buildscript {
 	}
 	dependencies {
 		classpath "gradle.plugin.org.eclipse.virgo.bundlor:bundlor-plugin:0.2"
-		classpath "gradle.plugin.com.eclipsesource.dockerizor:dockerizor:0.7.0"
+		classpath "gradle.plugin.com.eclipsesource.dockerizor:dockerizor:0.9.1"
         classpath 'org.asciidoctor:asciidoctor-gradle-plugin:1.5.3'
 	}
 }
 
-apply plugin: 'org.asciidoctor.gradle.asciidoctor'
+ext {
+	mongoJavaDriverVersion    = "2.13.3"
+	rabbitmqAmqpClientVersion = "3.5.5"
 
-ext.virgoProjects = [
-	project(':org.eclipse.virgo.samples.recipe.bundle'),
-]
-
-ext.dockerProjects = subprojects.findAll {it.name.contains('-runtime') || it.name.contains('-app')}
+	virgoProjects = [
+			project(':org.eclipse.virgo.samples.recipe.bundle'),
+	]
+	dockerProjects = subprojects.findAll { it.name.contains('-runtime') || it.name.contains('-app') }
+}
 
 configure(virgoProjects + dockerProjects) {
 	repositories {
@@ -34,50 +36,62 @@ configure(virgoProjects + dockerProjects) {
 
 configure(virgoProjects) {
 	apply plugin: 'java'
+	apply plugin: 'idea'
 	apply plugin: 'eclipse'
 	apply plugin: 'eclipse-wtp'
 
-	version = '0.1.0.BUILD-SNAPSHOT'
-
 	compileJava {
-		options.encoding = 'utf-8'
-		options.fork = true
-		doFirst {
-			options.forkOptions.with {
-				executable = 'java'
-				jvmArgs = [
-					'-cp',
-					configurations.ecj.asPath,
-					'org.eclipse.jdt.internal.compiler.batch.Main',
-					'-source',
-					'1.8',
-	                '-target',
-	                '1.8',
-					'-warn:-unused'
-				]
-			}
-		}
+		sourceCompatibility = 1.8  // can be switched to 10 for testing
+		targetCompatibility = 1.8
+		options.encoding = 'UTF-8'
 	}
 
 	compileTestJava {
-		options.encoding = 'utf-8'
-		options.fork = true
-		doFirst {
-			options.forkOptions.with {
-				executable = 'java'
-				jvmArgs = [
-					'-cp',
-					configurations.ecj.asPath,
-					'org.eclipse.jdt.internal.compiler.batch.Main',
-					'-source',
-					'1.8',
-					'-target',
-					'1.8',
-					'-warn:-unused'
-				]
-			}
-		}
+		sourceCompatibility = 1.8  // can be switched to 10 for testing
+		targetCompatibility = 1.8
+		options.encoding = 'UTF-8'
+		options.compilerArgs += "-parameters"
 	}
+
+//	compileJava {
+//		options.encoding = 'utf-8'
+//		options.fork = true
+//		doFirst {
+//			options.forkOptions.with {
+//				executable = 'java'
+//				jvmArgs = [
+//					'-cp',
+//					configurations.ecj.asPath,
+//					'org.eclipse.jdt.internal.compiler.batch.Main',
+//					'-source',
+//					'1.8',
+//	                '-target',
+//	                '1.8',
+//					'-warn:-unused'
+//				]
+//			}
+//		}
+//	}
+
+//	compileTestJava {
+//		options.encoding = 'utf-8'
+//		options.fork = true
+//		doFirst {
+//			options.forkOptions.with {
+//				executable = 'java'
+//				jvmArgs = [
+//					'-cp',
+//					configurations.ecj.asPath,
+//					'org.eclipse.jdt.internal.compiler.batch.Main',
+//					'-source',
+//					'1.8',
+//					'-target',
+//					'1.8',
+//					'-warn:-unused'
+//				]
+//			}
+//		}
+//	}
 
 	eclipse {
 		jdt {
@@ -147,15 +161,15 @@ configure(dockerProjects) {
 	dockerizor {
 		maintainer = 'Florian Waibel <fwaibel@eclipsesource.com>'
 
-		javaImage = 'java:8u92-jre-alpine' // <3>
+		javaImage = 'openjdk:8u171-jre-alpine3.7' // <3>
 
 		virgoVersion = 'latest'
-		hudsonJobName = 'gradle-build'
+		hudsonJobName = 'virgo-master'
 
-		removeAdminConsole = System.properties['local.build'] != 'true'
+		removeSplash = false
+		removeAdminConsole = false
 
 		virgoFlavour = 'VTS'
-		virgoVersion = 'latest'
 	}
 
 	dockerize.dependsOn configurations.repositoryExt
@@ -163,6 +177,6 @@ configure(dockerProjects) {
 }
 // end::dockerizor_confiugration[]
 
-task wrapper(type: Wrapper) {
-    gradleVersion = '2.10'
+configure(rootProject) {
+	apply plugin: 'org.asciidoctor.gradle.asciidoctor'
 }

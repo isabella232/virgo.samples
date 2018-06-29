@@ -95,9 +95,9 @@ allow to test drive the Virgo runtime
 $ ./gradlew :recipe-custom-virgo-runtime:startVirgoRuntime
 ----
 
-=== Bundle and deploy non OSGi-ready dependencies
+=== Bundle and deploy none OSGi-ready dependencies
 
-To be able to create and verify non OSGi-ready dependencies we need to
+To be able to create and verify none OSGi-ready dependencies we need to
 
 * create OSGi metadata and
 * deploy the bundled jar file.
@@ -150,7 +150,7 @@ $ ./gradlew :recipe-custom-virgo-runtime:com.rabbitmq.amqp.client-3.5.5:deploy
 
 include::../../../../recipe-template/src/docs/asciidoc/08_dockerize_recipe.adoc[]
 
-Virgo plan are a proven way to add the application bundles to a Virgo runtime.
+Virgo plans are a proven way to add the application bundles to a Virgo runtime.
 The snippet below shows the Gradle build file (Dockerizor configuration) needed to add such a plan file.
 
 .build.gradle

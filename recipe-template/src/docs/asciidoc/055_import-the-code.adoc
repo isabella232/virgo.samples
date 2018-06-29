@@ -6,6 +6,6 @@ The project folder is  called {recipe-short-name} and lies directly in the "Samp
 
 [NOTE]
 --
-Before you can drag'n'drop the project onto your freshly created Virgo Server you might have to execute
+Before you can drag and drop the project onto your freshly created Virgo Server you might have to execute
 menu:Virgo[Run Generation] of +META-INF/MANIFEST.MF+ (via a right click on the project) within your Eclipse IDE.
 --

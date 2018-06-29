@@ -1,1 +1,1 @@
-Please check src/asciidoc/recipe-xyz.adoc for detailed information
+Please check src/asciidoc/recipe-custom-runtime.adoc for detailed information

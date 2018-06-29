@@ -11,4 +11,4 @@ $ cd org.eclipse.virgo.samples
 $ cd {recipe-short-name}
 ----
 
-Once inside the source directory of this recipe - your are good to go.
+Once inside the source directory of this recipe - you are good to go.

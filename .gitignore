@@ -1,14 +1,6 @@
 */src/main/resources/META-INF/MANIFEST.MF
 */src/test/resources/META-INF/TEST.MF
 junit*.properties
-target/
-build/
-bin/
-.gradle/
-.settings/
-.classpath
-.project
-.springbeans
 integration-repo
 ivy-cache
 derby.log
@@ -16,3 +8,22 @@ derby.log
 com.cenqua.clover.core.prefs
 user-ivy.properties
 .DS_Store
+
+.gradle
+
+target/
+bin/
+build/
+out/
+
+# Eclipse
+.classpath
+.project
+.settings/
+.springbeans
+
+# IDEA
+.idea/
+*.iml
+*.ipr
+*.iws
