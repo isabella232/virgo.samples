@@ -28,15 +28,6 @@ ext {
 	dockerProjects = subprojects.findAll { it.name.contains('-runtime') || it.name.contains('-app') }
 }
 
-ext.virgoProjects = [
-	project(':org.eclipse.virgo.samples.recipe.data.mongodb'),
-]
-
-ext.dockerProjects = [
-	project(':recipe-accessing-data-mongodb-runtime'),
-	project(':recipe-accessing-data-mongodb-app'),
-]
-
 configure(virgoProjects + dockerProjects) {
 	repositories {
 		mavenCentral()
@@ -49,9 +40,9 @@ configure(virgoProjects + dockerProjects) {
 
 configure(virgoProjects) {
 	apply plugin: 'java'
+	apply plugin: 'idea'
 	apply plugin: 'eclipse'
 	apply plugin: 'eclipse-wtp'
-	apply plugin: 'idea'
 
 	compileJava {
 		sourceCompatibility = 1.8
