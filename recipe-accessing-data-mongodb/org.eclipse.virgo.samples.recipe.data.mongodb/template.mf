@@ -5,9 +5,10 @@ Bundle-SymbolicName: org.eclipse.virgo.samples.recipe.data.mongodb
 Import-Bundle: org.springframework.aop,
  org.springframework.beans,
  org.springframework.core,
- org.springframework.data.core,
+ org.springframework.transaction,
+ org.springframework.data.commons,
  org.springframework.data.mongodb
 Excluded-Imports: org.springframework.*
-Import-Package: com.mongodb;version="[2.14.3,3)",
+Import-Package: com.mongodb;version="[3.8,4)",
  javax.annotation;version="0",
  org.aopalliance.aop;version="1"

@@ -1,4 +1,7 @@
 include 'org.eclipse.virgo.samples.recipe.data.mongodb'
 
+include 'recipe-accessing-data-mongodb-runtime:org.springframework.data.commons-2.0.8.RELEASE'
+include 'recipe-accessing-data-mongodb-runtime:org.springframework.data.mongodb-2.0.8.RELEASE'
+
 include 'recipe-accessing-data-mongodb-runtime'
 include 'recipe-accessing-data-mongodb-app'

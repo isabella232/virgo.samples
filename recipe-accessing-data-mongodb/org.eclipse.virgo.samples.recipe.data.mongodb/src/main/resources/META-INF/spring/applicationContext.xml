@@ -1,20 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xmlns:context="http://www.springframework.org/schema/context"
-    xmlns:mongo="http://www.springframework.org/schema/data/mongo"
-    xmlns="http://www.springframework.org/schema/beans"
-    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
-		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
-		http://www.springframework.org/schema/data/mongo http://www.springframework.org/schema/data/mongo/spring-mongo.xsd" >
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xmlns:context="http://www.springframework.org/schema/context"
+	   xmlns:mongo="http://www.springframework.org/schema/data/mongo"
+	   xsi:schemaLocation="http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+          http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+          http://www.springframework.org/schema/data/mongo http://www.springframework.org/schema/data/mongo/spring-mongo-2.0.xsd">
 
 	<!-- tag::configuration[] -->
 	<context:property-placeholder location="classpath:mongodb.properties" />
 
-	<mongo:db-factory dbname="recipes" host="${mongodb.host:localhost}:${mongodb.port:27017}" /><!--1 -->
-	<mongo:template />
+	<mongo:mongo-client host="${mongodb.host:localhost}" port="${mongodb.port:27017}"/>
+	<bean id="mongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">
+		<constructor-arg ref="mongoClient"/>
+		<constructor-arg name="databaseName" value="recipe"/>
+	</bean>
+
 	<mongo:repositories base-package="org.eclipse.virgo.samples.recipe.data.mongodb" />
 
-	<context:component-scan base-package="org.eclipse.virgo.samples.recipe.data.mongodb" /><!--4 -->
+	<context:component-scan base-package="org.eclipse.virgo.samples.recipe.data.mongodb" />
 	<!-- end::configuration[] -->
 
 </beans>

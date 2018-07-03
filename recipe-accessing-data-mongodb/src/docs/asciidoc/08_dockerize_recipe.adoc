@@ -25,7 +25,7 @@ To start a temporary MongoDB container inside this network issue the following c
 
 [source,sh]
 ----
-$ docker run --rm -it --net=recipe_nw --name mongodb mongo:3.4.3
+$ docker run --rm -it --net=recipe_nw --name mongodb mongo:4.0.0
 ----
 
 then run the application with the environment variable `mongodb.host` set to the container name used in the command above:

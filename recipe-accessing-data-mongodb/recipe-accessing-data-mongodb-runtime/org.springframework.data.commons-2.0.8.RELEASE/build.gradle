@@ -1,0 +1,3 @@
+dependencies {
+	sourceBundle 'org.springframework.data:spring-data-commons:2.0.8.RELEASE'
+}

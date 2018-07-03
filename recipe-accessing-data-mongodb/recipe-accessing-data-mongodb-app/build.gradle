@@ -5,7 +5,7 @@ dockerizor {
 	pickupFiles = ['recipe-accessing-data-mongodb.plan']
 
 	virgoVersion = 'latest'
-	hudsonJobName = 'virgo-master'
+	hudsonJobName = 'virgo-blueprint3'
 
 	virgoHome = '/home/virgo/virgo-recipe-accessing-data-mongodb'
 }
